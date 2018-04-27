@@ -44,7 +44,7 @@
                             <div class="col-xs-12">
                               <h5>QuickBox :: <span style="color: #fff;text-shadow: 0px 0px 6px #fff;"><?php echo "$version"; ?></span></h5>
                               <small><a href="https://quickbox.io/readme-md/" target="_blank">README.md</a></small>
-                              <small><a href="https://github.com/QuickBox/QB/compare/v2.5.1...<?php echo $version; ?>" target="_blank">CHANGELOG</a></small>
+                              <small><a href="https://github.com/QuickBox/QB/compare/v2.5.3...<?php echo $version; ?>" target="_blank">CHANGELOG</a></small>
                             </div>
                           </div>
                         </li>
@@ -175,10 +175,13 @@
             <?php if (processExists("transmission-daemon",debian-transmission) && file_exists('/install/.transmission.lock')) { ?>
               <li><a href="<?php echo "$transmissionURL"; ?>" class="grayscale" target="_blank"><img src="img/brands/transmission.png" class="brand-ico"> <span>Transmission Web Control</span></a></li>
             <?php } ?>
+<<<<<<< HEAD
 			<!-- // QBITTORRENT // -->
             <?php if (processExists("qbittorrent-nox",$username) && file_exists('/install/.qbittorrent.lock')) { ?>
               <li><a href="<?php echo "$qbittorrentURL"; ?>" class="grayscale" target="_blank"><img src="img/brands/qbittorrent.png" class="brand-ico"> <span>qBittorrent</span></a></li>
             <?php } ?>
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
             <?php if ($username == "$master") { ?>
               <?php if (processExists("resilio-sync",rslsync) && file_exists('/install/.btsync.lock')) { ?>
                 <li><a class="grayscale" href="<?php echo "$btsyncURL"; ?>" target="_blank"><img src="img/brands/btsync.png" class="brand-ico"> <span>BTSync</span></a></li>
@@ -260,9 +263,12 @@
                 <?php if (file_exists('/install/.transmission.lock')) { ?>
                   <li><a href="/<?php echo "$username"; ?>.transmission.downloads" target="_blank">Transmission</a></li>
                 <?php } ?>
+<<<<<<< HEAD
 				<?php if (file_exists('/install/.qbittorrent.lock')) { ?>
                   <li><a href="/<?php echo "$username"; ?>.qbittorrent.downloads" target="_blank">qBittorrent</a></li>
                 <?php } ?>
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
                 <?php if (file_exists('/home/'. $username .'/public_html/'. $username .'.zip')) { ?>
                   <li><a href="/~<?php echo "$username"; ?>/<?php echo "$username"; ?>.zip" target="_blank"> <span>OpenVPN Config</span></a></li>
                 <?php } ?>

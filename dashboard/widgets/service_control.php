@@ -63,6 +63,7 @@
                       <td class="text-center"><?php echo "$cbodytr"; ?></td>
                     </tr>
                     <?php } ?>
+<<<<<<< HEAD
 					
                   <?php if (file_exists("/install/.qbittorrent.lock")) { ?>
                     <tr>
@@ -72,6 +73,9 @@
                     </tr>
                     <?php } ?>
 					
+=======
+
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
                 <?php if ($username == "$master") { ?>
 
                     <tr>

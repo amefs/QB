@@ -2,7 +2,11 @@
 session_destroy();
 include '/srv/rutorrent/php/util.php';
 include ($_SERVER['DOCUMENT_ROOT'].'/widgets/class.php');
+<<<<<<< HEAD
 $version = "v2.5.3";
+=======
+$version = "v2.5.4";
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 error_reporting(E_ERROR);
 $master = file_get_contents('/srv/rutorrent/home/db/master.txt');
 $master=preg_replace('/\s+/', '', $master);
@@ -278,7 +282,10 @@ $shellinabox = processExists("shellinabox",shellinabox);
 $csf = processExists("lfd",root);
 $sickgear = processExists("sickgear",8088);
 $transmission = processExists("transmission-daemon",debian-transmission);
+<<<<<<< HEAD
 $qbittorrent = processExists("qbittorrent-nox",$username);
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 $nzbget = processExists("nzbget",$username);
 $znc = processExists("znc",$username);
 
@@ -322,7 +329,10 @@ if(file_exists('/srv/rutorrent/home/custom/url.override.php')){
   $subsonicURL = "https://" . $_SERVER['HTTP_HOST'] . "/subsonic";
   $syncthingURL = "https://" . $_SERVER['HTTP_HOST'] . "/syncthing/";
   $transmissionURL = "https://" . $_SERVER['HTTP_HOST'] . "/transmission/web/";
+<<<<<<< HEAD
   $qbittorrentURL = "https://" . $_SERVER['HTTP_HOST'] . "/qbittorrent/";
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   if ($zssl == "true") { $zncURL = "https://" . $_SERVER['HTTP_HOST'] . ":$zport"; }
   if ($zssl == "false") { $zncURL = "http://" . $_SERVER['HTTP_HOST'] . ":$zport"; }
  }
@@ -392,8 +402,11 @@ case 0:
     $cbodyst .= $syncthing;
   $transmission = isEnabled("transmission-daemon", debian-transmission);
     $cbodytr .= $transmission;
+<<<<<<< HEAD
   $qbittorrent = isEnabled("qbittorrent", $username);
     $cbodyqb .= $qbittorrent;
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   $x2go = isEnabled("x2go", $username);
     $cbodyx .= $x2go;
   $znc = isEnabled("znc", $username);
@@ -434,12 +447,18 @@ case 66:
     } elseif ($process == "subsonic"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl start $process");
+<<<<<<< HEAD
     } elseif ($process == "transmission-daemon"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl start $process");
     } elseif ($process == "qbittorrent"){
       shell_exec("sudo systemctl enable $process@$username");
       shell_exec("sudo systemctl start $process@$username");
+=======
+    } elseif ($process == "transmission"){
+      shell_exec("sudo systemctl enable $process");
+      shell_exec("sudo systemctl start $process");
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
     } else {
       shell_exec("sudo systemctl enable $process@$username");
       shell_exec("sudo systemctl start $process@$username");
@@ -480,6 +499,7 @@ case 77:
     } elseif ($process == "subsonic"){
       shell_exec("sudo systemctl stop $process");
       shell_exec("sudo systemctl disable $process");
+<<<<<<< HEAD
     } elseif ($process == "transmission-daemon"){
       shell_exec("sudo systemctl stop $process");
       shell_exec("sudo systemctl disable $process");
@@ -487,6 +507,12 @@ case 77:
       shell_exec("sudo systemctl stop $process@$username");
       shell_exec("sudo systemctl disable $process@$username");
     }  else {
+=======
+    } elseif ($process == "tranmission"){
+      shell_exec("sudo systemctl stop $process");
+      shell_exec("sudo systemctl disable $process");
+    } else {
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
       shell_exec("sudo systemctl stop $process@$username");
       shell_exec("sudo systemctl disable $process@$username");
     }
@@ -526,12 +552,18 @@ case 88:
     } elseif ($process == "subsonic"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl restart $process");
+<<<<<<< HEAD
     } elseif ($process == "transmission-daemon"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl restart $process");
     } elseif ($process == "qbittorrent"){
       shell_exec("sudo systemctl enable $process@$username");
       shell_exec("sudo systemctl restart $process@$username");
+=======
+    } elseif ($process == "tranmission"){
+      shell_exec("sudo systemctl enable $process");
+      shell_exec("sudo systemctl restart $process");
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
     } else {
       shell_exec("sudo systemctl restart $process@$username");
     }

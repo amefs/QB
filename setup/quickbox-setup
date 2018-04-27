@@ -290,14 +290,22 @@ function _askdeluge() {
 
 # install transmission question (8.5)
 function _asktr() {
+<<<<<<< HEAD
   echo -ne "${bold}${yellow}Would you like to install transmission? ${normal} [y]es or [${green}n${normal}]o: "; read responce
   case $responce in
     [yY] | [yY][Ee][Ss]) tr=yes ;;
     [nN] | [nN][Oo] | "" ) tr=no ;;
+=======
+  echo -ne "${bold}${yellow}Would you like to install transmission? ${normal} [${green}y${normal}]es or [n]o: "; read responce
+  case $responce in
+    [yY] | [yY][Ee][Ss] | "" ) tr=yes ;;
+    [nN] | [nN][Oo]) tr=no ;;
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
     *) tr=no ;;
   esac
   echo
 }
+<<<<<<< HEAD
 # install qbittorrent question (8.8)
 function _askqb() {
   echo -ne "${bold}${yellow}Would you like to install qBittorrent? ${normal} [y]es or [${green}n${normal}]o: "; read responce
@@ -308,6 +316,8 @@ function _askqb() {
   esac
   echo
 }
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 
 # adduser function (9)
 function _adduser() {
@@ -675,8 +685,11 @@ function _libtorrent() {
   cp ${local_setup}sources/libtorrent-0.13.4-tar.patch .
   patch -p1 < libtorrent-*-tar.patch >>"${OUTTO}" 2>&1
   ./configure --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2l -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2l/include" --enable-ipv6 >>"${OUTTO}" 2>&1
+<<<<<<< HEAD
   elif [ $LTORRENT = 0.13.6 ]; then
   ./configure --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2l -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2l/include" --enable-ipv6 >>"${OUTTO}" 2>&1
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   else
   ./configure --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2l -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2l/include" >>"${OUTTO}" 2>&1
   fi
@@ -814,6 +827,7 @@ fi
 fi
 }
 
+<<<<<<< HEAD
 function _insdwApache() {
 APPNAME='deluge'
 APPDPORT=`cat /home/${username}/.config/deluge/web.conf | grep -E ".*port.*" | grep -Eo [0-9]+`
@@ -833,13 +847,18 @@ EOF
   chown www-data: /etc/apache2/sites-enabled/deluge.conf
 }
 
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 function _insTr() {
   apt-get -q -y update >>"${OUTTO}" 2>&1
   apt-get -q -y install transmission-daemon >>"${OUTTO}" 2>&1
   service transmission-daemon stop >>"${OUTTO}" 2>&1
   mkdir -p /home/${username}/torrents/transmission
   chmod g+w /home/${username}/torrents/transmission >/dev/null 2>&1
+<<<<<<< HEAD
   usermod -a -G debian-transmission ${username} >/dev/null 2>&1
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   #chgrp -R debian-transmission /home/${username}/torrents/transmission
   chown -R ${username}:debian-transmission /home/${username}/torrents/transmission >/dev/null 2>&1
   sed -i "s/\/var\/lib\/transmission-daemon\/downloads/\/home\/${username}\/torrents\/transmission/g" /etc/transmission-daemon/settings.json
@@ -851,6 +870,7 @@ function _insTr() {
 }
 
 function _insTrWeb() {
+<<<<<<< HEAD
   #!/bin/sh
   # 获取第一个参数做为目录
   ROOT_FOLDER="$1"
@@ -999,10 +1019,68 @@ function _insTrWeb() {
 
   rm -rf "$tmpFolder"
   #touch /install/.transmission.lock
+=======
+  rootFolder=""
+  webFolder=""
+  orgindex="index.original.html"
+  index="index.html"
+  tmpFolder="/tmp/tr-web-control"
+  packname="transmission-control-full.tar.gz"
+  host="https://github.com/ronggang/transmission-web-control/raw/master/release/"
+  downloadurl="$host$packname"
+  if [ ! -d "$tmpFolder" ]; then
+	mkdir -p "$tmpFolder"
+  fi
+  # 找出web ui 目录
+  folderIsExist=0
+  echo "Searching Transmission Web Folder..." >>"${OUTTO}" 2>&1
+  rootFolder="/usr/share/transmission"
+  echo "Looking for folder: $rootFolder/web" >>"${OUTTO}" 2>&1
+  if [ -d "$rootFolder/web" ]; then
+	    webFolder="$rootFolder/web"
+	    folderIsExist=1
+      echo "Folder found. Using it." >>"${OUTTO}" 2>&1
+  else
+      echo "Folder not found. Will search the entire /. This will take a while..." >>"${OUTTO}" 2>&1
+      rootFolder=`find / -name 'web' -type d 2>/dev/null| grep 'transmission/web' | sed 's/\/web$//g'`
+      if [ -d "$rootFolder/web" ]; then
+	            webFolder="$rootFolder/web"
+	            folderIsExist=1
+      fi
+  fi
+
+# 如果目录存在，则进行下载和更新动作
+  if [ $folderIsExist = 1 ]; then
+        cd "$tmpFolder"
+      	echo "Downloading Transmission Web Control..." >>"${OUTTO}" 2>&1
+      	wget -q "$downloadurl"
+      	echo "Installing..." >>"${OUTTO}" 2>&1
+      	tar -xzvf "$packname" -C "$tmpFolder" >>"${OUTTO}" 2>&1
+      	rm "$packname"
+      	# 如果之前没有安装过，则先将原系统的文件改为
+      	if [ ! -f "$webFolder/$orgindex" -a -f "$webFolder/$index" ]; then
+      		      mv "$webFolder/$index" "$webFolder/$orgindex"
+      	fi
+      	# 复制文件到
+      	cp -r web "$rootFolder"
+        find "$rootFolder" -type d -exec chmod o+rx {} \;
+        find "$rootFolder" -type f -exec chmod o+r {} \;
+      	echo "Done." >>"${OUTTO}" 2>&1
+  else
+      	#echo "##############################################"
+      	#echo "#"
+      	echo "# ERROR : Transmisson WEB UI Folder is missing." >>"${OUTTO}" 2>&1
+      	#echo "#"
+      	#echo "##############################################"
+  fi
+  rm -rf "$tmpFolder"
+  touch /install/.transmission.lock
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   #cd ${local_dashboard}/custom
   #patch -p1 < ${local_setup}templates/tr-php.patch >>"${OUTTO}" 2>&1
 }
 
+<<<<<<< HEAD
 function _insTrApache() {
 APPNAME='transmission'
 APPDPORT='9091'
@@ -1110,6 +1188,8 @@ EOF
   chown www-data: /etc/apache2/sites-enabled/qbittorrent.conf
 }
 
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 # scgi enable function (22-nixed)
 # function _scgi() { ln -s /etc/apache2/mods-available/scgi.load /etc/apache2/mods-enabled/scgi.load >>"${OUTTO}" 2>&1 ; }
 
@@ -1164,9 +1244,12 @@ function _fileindexer() {
   if [[ ${tr} == "yes" ]]; then
 	ln -s /home/${username}/torrents/transmission/ ${username}.transmission.downloads
   fi
+<<<<<<< HEAD
   if [[ ${qb} == "yes" ]]; then
 	ln -s /home/${username}/torrents/qbittorrent/ ${username}.qbittorrent.downloads
   fi
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 }
 
 # function to configure apache (24)
@@ -1473,7 +1556,11 @@ function _insbbr() {
   cd /tmp
   cp ${local_setup}sources/BBR/BBR.sh .
   chmod a+x BBR.sh
+<<<<<<< HEAD
   bash BBR.sh -f v4.16 >>"${OUTTO}" 2>&1
+=======
+  bash BBR.sh -f v4.12.14 >>"${OUTTO}" 2>&1
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   cd
 }
 
@@ -1628,7 +1715,10 @@ _ask10g
 _askrtorrent
 _askdeluge
 _asktr
+<<<<<<< HEAD
 _askqb
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 _askdashtheme
 _adduser
 _askffmpeg
@@ -1645,7 +1735,11 @@ echo ""
 echo -n "Pulling QuickBox Ecosystem ... ";_repos & spinner $!;echo
 echo -n "Updating system ... ";_updates & spinner $!;echo
 echo -n "Installing all needed dependencies ... ";_depends & spinner $!;echo
+<<<<<<< HEAD
 echo -n "Installing openssl ... ";_openssl & spinner $!;echo
+=======
+_openssl
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 echo -n "Setting up system executables ... ";_syscommands & spinner $!;echo
 echo -n "Building required user directories ... ";_skel & spinner $!;echo
 if [[ ${quota} == "yes" ]]; then
@@ -1663,6 +1757,7 @@ echo -n "Installing rtorrent-${green}$RTVERSION${normal} ... ";_rtorrent & spinn
 echo -n "Installing rutorrent into /srv ... ";_rutorrent & spinner $!;echo
 echo -n "Installing rutorrent plugins ... ";_rutorrent-plugins & spinner $!;echo
 echo -n "Installing deluge ... ";_deluge & spinner $!;echo
+<<<<<<< HEAD
 echo -n "Setting up deluge Web Reverse Proxy ... ";_insdwApache & spinner $!;echo
 if [[ ${tr} == "yes" ]]; then
 	echo -n "Configuring Transmisson ... ";_insTr & spinner $!;echo
@@ -1672,6 +1767,11 @@ fi
 if [[ ${qb} == "yes" ]]; then
 	echo -n "Installing qBittorrent ... ";_qbittorrent & spinner $!;echo
 	echo -n "Setting up qBittorrent Reverse Proxy ... ";_insqBApache & spinner $!;echo
+=======
+if [[ ${tr} == "yes" ]]; then
+	echo -n "Configuring Transmisson ... ";_insTr & spinner $!;echo
+	echo -n "Installing Transmisson Web Control ... ";_insTrWeb & spinner $!;echo
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 fi
 echo -n "Installing mktorrent from source ... ";_mktorrent & spinner $!;echo
 echo -n "Installing quickbox dashboard ... ";_dashboard & spinner $!;echo
@@ -1692,9 +1792,12 @@ echo -n "Setting permissions on ${username} ... ";_perms & spinner $!;echo;
 if [[ ${bbr} == "yes" ]]; then
     echo -n "install BBR ... ";_insbbr & spinner $!;echo
 fi
+<<<<<<< HEAD
 if lspci | grep -i bcm > /dev/null; then
     echo -n "Installing firmware for BCM NIC ... ";_insbcm & spinner $!;echo
 fi
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 cd
 E=$(date +%s)
 DIFF=$(echo "$E" - "$S"|bc)

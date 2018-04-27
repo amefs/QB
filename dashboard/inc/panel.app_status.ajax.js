@@ -255,6 +255,7 @@ $(document).ready(function() {
     }});
   }
   appstat_transmission();
+<<<<<<< HEAD
   
     // <<-------- QBITTORRENT -------->> //
   function appstat_qbittorrent() {
@@ -264,6 +265,8 @@ $(document).ready(function() {
     }});
   }
   appstat_qbittorrent();
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 
   // <<-------- WEB CONSOLE -------->> //
   function appstat_webconsole() {

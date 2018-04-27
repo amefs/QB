@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 [![QuickBox](https://github.com/QuickBox/quickbox_github_assets/blob/master/img/quickbox2.png "QuickBox")](https://quickbox.io)
+=======
+[![QuickBox](https://cdn.quickbox.io/file/2018/04/qb_logo_original.svg "QuickBox")](https://quickbox.io)
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 
 ## To make use of the GitHub repo (all future updates posted here!)
 >This step is only required for users who are coming off of our self-hosted GitLab repositories. If you are installing from fresh, please see [How to install](#how-to-install)
@@ -58,7 +62,11 @@ updateQuickBox
 
 ## Script status
 
+<<<<<<< HEAD
 [![Version 2.5.3-production](https://img.shields.io/badge/version-2.5.3-674172.svg?style=flat-square)](https://quickbox.io/readme-md/) [![GNU v3.0 License](https://img.shields.io/badge/license-GNU%20v3.0%20License-blue.svg?style=flat-square)](https://quickbox.io/readme-md/)
+=======
+[![Version 2.5.4-production](https://img.shields.io/badge/version-2.5.4-674172.svg?style=flat-square)](https://quickbox.io/readme-md/) [![GNU v3.0 License](https://img.shields.io/badge/license-GNU%20v3.0%20License-blue.svg?style=flat-square)](https://quickbox.io/readme-md/)
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 
 #### Ubuntu Builds
  [![Ubuntu 15.10 Passing](https://img.shields.io/badge/Ubuntu%2015.10-passing-brightgreen.svg?style=flat-square)](https://quickbox.io/readme-md/) [![Ubuntu 16.04 Passing](https://img.shields.io/badge/Ubuntu%2016.04-passing-brightgreen.svg?style=flat-square)](https://quickbox.io/readme-md/) [![Ubuntu 16.10 Failing](https://img.shields.io/badge/Ubuntu%2016.10-failing-brightred.svg?style=flat-square)](https://quickbox.io/readme-md/)
@@ -179,7 +187,7 @@ bash /etc/QuickBox/setup/quickbox-setup
 ```
 mkdir /install/ && touch /install/.developer.lock; \
 apt-get -yqq update; apt-get -yqq upgrade; apt-get -yqq install git lsb-release; \
-git clone --branch "development" https://github.com/QuickBox/QB /etc/QuickBox &&
+git clone --branch "development" https://github.com/QuickBox/QB /etc/QuickBox; \
 bash /etc/QuickBox/setup/quickbox-setup
 ```
 

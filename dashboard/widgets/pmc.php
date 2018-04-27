@@ -269,6 +269,7 @@
                       <td style="vertical-align: middle; text-align: center"><a href="?installpackage-transmission=true" data-toggle="modal" data-target="#sysResponse" id="transmissionInstall" class="btn btn-xs btn-default"><?php echo T('INSTALL'); ?></a></td>
                     <?php } ?>
                     </tr>
+<<<<<<< HEAD
                     <tr>
                     <td>qBittorrent</td>
                     <td><?php echo T('QBITTORRENT'); ?></td>
@@ -278,6 +279,8 @@
                       <td style="vertical-align: middle; text-align: center"><a href="?installpackage-qbittorrent=true" data-toggle="modal" data-target="#sysResponse" id="qbittorrentInstall" class="btn btn-xs btn-default"><?php echo T('INSTALL'); ?></a></td>
                     <?php } ?>
                     </tr>
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
                     <tr>
                       <td>x2Go</td>
                       <td><?php echo T('X2GO'); ?></td>

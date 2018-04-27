@@ -468,6 +468,7 @@
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- modal -->
+<<<<<<< HEAD
 <!-- QBITTORRENT UNINSTALL MODAL -->
 <div class="modal bounceIn animated" id="qbittorrentRemovalConfirm" tabindex="-1" role="dialog" aria-labelledby="qBittorrentRemovalConfirm" aria-hidden="true">
   <div class="modal-dialog">
@@ -486,6 +487,8 @@
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- modal -->
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 <!-- X2GO UNINSTALL MODAL -->
 <div class="modal bounceIn animated" id="x2goRemovalConfirm" tabindex="-1" role="dialog" aria-labelledby="x2goRemovalConfirm" aria-hidden="true">
   <div class="modal-dialog">
@@ -939,6 +942,7 @@ $(document).ready(function() {
       sticky: true
     });
   });
+<<<<<<< HEAD
   // qbittorrentRemove
   $('#qbittorrentRemove').click(function(){
     $.gritter.add({
@@ -948,6 +952,8 @@ $(document).ready(function() {
       sticky: true
     });
   });
+=======
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
   // QuasselRemove
   $('#quasselRemove').click(function(){
     $.gritter.add({

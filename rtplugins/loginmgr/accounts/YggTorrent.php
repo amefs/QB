@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 
 class YggTorrentAccount extends commonAccount
 {
@@ -13,6 +14,19 @@ class YggTorrentAccount extends commonAccount
         );
     }
 
+=======
+class YggTorrentAccount extends commonAccount
+{
+    public $url = "https://yggtorrent.is";
+    protected function isOK($client)
+    {
+        return (
+            $client->status == 200
+            && $client->results !== 'Vous devez vous connecter pour télécharger un torrent'
+            && strpos($client->results, "S'identifier</a>") === false
+        );
+    }
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
     protected function login($client, $login, $password, &$url, &$method, &$content_type, &$body, &$is_result_fetched)
     {
         $is_result_fetched = false;

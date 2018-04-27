@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## CHANGELOG efs-mod v1.1.1:
 _Changelog updated monday, April 19, 2018_
 
@@ -65,6 +66,13 @@ _Changelog updated saturday, September 23, 2017_
 ---
 
 ## CHANGELOG efs-dev v0.1.2:
+=======
+<<<<<<< HEAD
+
+##CHANGELOG v2.4.8:
+=======
+## CHANGELOG efs-dev v0.1.1:
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 
 ### General adjustments & additions
 * First dev version
@@ -76,12 +84,20 @@ _Changelog updated saturday, September 23, 2017_
 	+ deluge 1.3.15 stable version
 * new libboost
 * fix hostname
+<<<<<<< HEAD
 * fix pem lossing in vultr host
 * require encryption in rtorrent profile
 * add BBR
 * add transmission
 
 ## CHANGELOG v2.4.8:
+=======
+* fix perm lossing in vultr host
+* require encryption in rtorrent profile
+
+## CHANGELOG v2.4.8:
+>>>>>>> b06e9c4... Merge pull request #3 from amefs/master
+>>>>>>> 0cbe903411486b421275213a6bcb89087fa99ea0
 _Changelog updated Monday, October 24, 2016_
 
 ---
