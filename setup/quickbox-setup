@@ -357,7 +357,6 @@ function _adduser() {
   printf "${username}:${passwd}" > /root/"$username".info.db
   echo
   ha1pass=`echo -n "${passwd}"|md5sum |cut -f1 -d' '`
-  htpasswd -bc /etc/apache2/.transmissionpwd ${username} ${passwd} >>"${OUTTO}" 2>&1
 }
 
 # install ffmpeg question (11)
@@ -1012,10 +1011,6 @@ APPDPORT='9091'
 <Location /$APPNAME>
 ProxyPass http://localhost:$APPDPORT/$APPNAME
 ProxyPassReverse http://localhost:$APPDPORT/$APPNAME
-AuthType Basic
-AuthName "Restricted Content"
-AuthUserFile /etc/apache2/.transmissionpwd
-Require valid-user
 </Location>
 EOF
 
@@ -1688,7 +1683,7 @@ fi
 if [[ ${tr} == "yes" ]]; then
 	echo -n "Configuring Transmisson ... ";_insTr & spinner $!;echo
 	echo -n "Installing Transmisson Web Control ... ";_insTrWeb & spinner $!;echo
-#echo -n "Setting up Transmission Reverse Proxy ... ";_insTrApache & spinner $!;echo
+  echo -n "Setting up Transmission Reverse Proxy ... ";_insTrApache & spinner $!;echo
 fi
 if [[ ${QBVERSION} != "no" ]]; then
 	echo -n "Installing qBittorrent ... ";_qbittorrent & spinner $!;echo
