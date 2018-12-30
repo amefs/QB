@@ -867,7 +867,8 @@ function _insTr() {
   sudo add-apt-repository -y ppa:transmissionbt/ppa >>"${OUTTO}" 2>&1
   apt-get -q -y update >>"${OUTTO}" 2>&1
   apt-get -q -y install transmission-daemon >>"${OUTTO}" 2>&1
-  service transmission-daemon stop >>"${OUTTO}" 2>&1
+  systemctl stop transmission-daemon >>"${OUTTO}" 2>&1
+  systemctl disable transmission-daemon >>"${OUTTO}" 2>&1
   mkdir -p /home/${username}/.config/transmission/blocklists >/dev/null 2>&1
 	mkdir -p /home/${username}/.config/transmission/resume >/dev/null 2>&1
 	mkdir -p /home/${username}/.config/transmission/torrents >/dev/null 2>&1
