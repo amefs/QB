@@ -882,7 +882,7 @@ function _insTr() {
   mkdir -p /home/${username}/trwatch
   chmod -R 755 /home/${username}/.config
   chown -R ${username}.${username} /home/${username}/.config/
-  chmod -R 755 /home/${u}/torrents/transmission
+  chmod -R 755 /home/${username}/torrents/transmission
   chown -R ${username}.${username} /home/${username}/torrents/transmission
   chmod -R 755 /home/${username}/trwatch
   chown -R ${username}.${username} /home/${username}/trwatch
