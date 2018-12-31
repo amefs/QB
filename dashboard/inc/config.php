@@ -394,7 +394,7 @@ case 0:
     $cbodyss .= $subsonic;
   $syncthing = isEnabled("syncthing", $username);
     $cbodyst .= $syncthing;
-  $transmission = isEnabled("transmission-daemon", $username);
+  $transmission = isEnabled("transmission", $username);
     $cbodytr .= $transmission;
   $qbittorrent = isEnabled("qbittorrent", $username);
     $cbodyqb .= $qbittorrent;
