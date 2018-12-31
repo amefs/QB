@@ -122,7 +122,7 @@ if (file_exists('/home/'.$username.'/.sessions/rtorrent.lock')) {
                   <h4><?php echo T('DTORRENTS_TITLE'); ?></h4>
                   <p class="nomargin"><?php echo T('TORRENTS_LOADED_1'); ?> <b><?php echo "$dtorrents"; ?></b> <?php echo T('TORRENTS_LOADED_2'); ?></p>
                   <?php } ?>
-				  <?php if (processExists("transmission-daemon",$username) && file_exists('/install/.transmission.lock')) { ?>
+				  <?php if (processExists("transmission",$username) && file_exists('/install/.transmission.lock')) { ?>
                   <h4><?php echo T('TRTORRENTS_TITLE'); ?></h4>
                   <p class="nomargin"><?php echo T('TORRENTS_LOADED_1'); ?> <b><?php echo "$transtorrents"; ?></b> <?php echo T('TORRENTS_LOADED_2'); ?></p>
                   <?php } ?>
