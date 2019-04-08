@@ -1,4 +1,4 @@
-[![QuickBox](https://cdn.quickbox.io/file/2018/04/qb_logo_original.svg "QuickBox")](https://quickbox.io)
+[![QuickBox](https://cdn.quickbox.io/files/2018/04/qb_logo_original.svg "QuickBox")](https://quickbox.io)
 
 ---
 
@@ -7,15 +7,11 @@ We love our Community, in fact, we love them so much that we want to provide eve
 
 Check us out on the following platforms. Within you'll find friends and a supportive bunch looking to get you along. Additionally, we don't really use our GitHub for issue tracking and support, it's simply not the proper medium. I know, it's not always fun to setup yet another account, but hey, you're here right!?
 
-#### [Register with QuickBox.IO to get started!](https://quickbox.io/sign-up/)
+#### [Register with QuickBox.IO to get started!](https://quickbox.io/register/)
 
 ### The QuickBox Forums (aka The Plaza)
 You got the entire Community at your back! Sort through already solved quandaries, feature requests, and current issues posted by other members.
 * ##### [QuickBox Plaza](https://plaza.quickbox.io/categories)
-
-### The QuickBox IRC/Live Chat
-Well, there's always someone here to address your loniless or your issues (related to QuickBox, mmk - but not always *sigh*)
-* ##### [QuickBox IRC](https://chat.quickbox.io/)
 
 ### The QuickBox Discord Server/Live Chat
 Oh yes, it's total mayhem! Fun features, live updates, games and prizes, support and a whole lot more... come find us for a late night buzz and really rediculous conversations and budding bromances.
@@ -37,7 +33,7 @@ rm -rf ~/QuickBox
 ### If you are already located on the GitHub repo as of v2.4.9, run the following to easily update to the new v2.5.+ QuickBox/QB repo:
 ```
 rm -rf /etc/QuickBox; \
-git clone -b upstream https://github.com/amefs/QB /etc/QuickBox; \
+git clone https://github.com/amefs/QB /etc/QuickBox; \
 wget -O /usr/local/bin/quickbox/system/updateQuickBox https://raw.githubusercontent.com/amefs/QB/master/packages/system/updateQuickBox; \
 dos2unix $(find /usr/local/bin/quickbox -type f) && chmod +x $(find /usr/local/bin/quickbox -type f); \
 updateQuickBox
@@ -54,7 +50,7 @@ This simply means you do not have Deluge installed, there is no further action f
 ### [2]:
 grab the current/future QuickBox repository with the following:
 ```
-git clone -b upstream https://github.com/amefs/QB /etc/QuickBox
+git clone https://github.com/amefs/QB /etc/QuickBox
 ```
 
 >If you receive an error `/etc/QuickBox already exists` please perform an `rm -rf /etc/QuickBox`. You can then run the `git clone` command above to proceed.
@@ -192,7 +188,7 @@ After that access your box using a SSH client, like PuTTY.
 **Run the following command to grab our latest stable release ...**
 ```
 apt-get -yqq update; apt-get -yqq upgrade; apt-get -yqq install git lsb-release; \
-git clone -b upstream https://github.com/amefs/QB /etc/QuickBox; \
+git clone https://github.com/amefs/QB /etc/QuickBox; \
 bash /etc/QuickBox/setup/quickbox-setup
 ```
 
