@@ -74,7 +74,7 @@ var theUILang =
  Remove_and			: "Rimuovi e",
  Details			: "Dettagli...",
  Properties			: "Proprietà...",
- of				: "di", //this two creates line 
+ of				: "di", //this two creates line
  connected			: "connessi", //  XX of YY connected
  High_priority			: "Alta",
  Normal_priority		: "Normale",
@@ -160,7 +160,7 @@ var theUILang =
  GetTrackerMessage		: "Receive messages from tracker",
  Help				: "Help",
  Speed				: "Speed",
- Dont_add_tname 		: "Don't add torrent's name to path", 
+ Dont_add_tname 		: "Don't add torrent's name to path",
  Free_Disk_Space		: "Free Disk Space",
  badXMLRPCVersion		: "rTorrent is compiled with incorrect version of xmlrpc-c library, without i8 support. Version must be >= 1.11. Some functionality will be unavailable.",
  badLinkTorTorrent		: "No connection to rTorrent. Check if it is really running. Check $scgi_port and $scgi_host settings in config.php and scgi_port in rTorrent configuration file.",
@@ -275,5 +275,7 @@ var theUILang =
  PeerDL 			: "Peer DL",
  PeerDownloaded 		: "Peer Downloaded",
  Save_path			: "Save path",
- registerMagnet			: "Try to register magnet protocol handler at start"
+ registerMagnet			: "Try to register magnet protocol handler at start",
+ linkTorTorrentRestored		: "Connection to rTorrent established.",
+ removeAllTegs			: "Remove all tags"
 };

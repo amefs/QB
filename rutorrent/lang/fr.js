@@ -1,4 +1,4 @@
-﻿/*
+/*
  * French language file.
  *
  * Initial Authors: Platoon21 (charlesprost@gmail.com) and Zempashi
@@ -12,7 +12,7 @@ var theUILang =
  Downloads			: "Téléchargement",
  Connection			: "Connexion",
  BitTorrent			: "BitTorrent",
- Advanced			: "Avancé",
+ Advanced			: "Avancées",
  User_Interface 		: "Interface",
  Confirm_del_torr		: "Confirmer la suppression des torrents",
  Update_GUI_every		: "Fréq. des MàJ de l'UI",
@@ -130,7 +130,7 @@ var theUILang =
  mnu_search			: "Rechercher",
  mnu_lang			: "Langue",
  torrent_add			: "Ajouter un torrent", /*Caption of torrent add box*/
- time_w 			: "sm ", /*pour x semaines*/
+ time_w 			: "sem ", /*pour x semaines*/
  time_d 			: "j ", /*pour x jours restants*/
  time_h 			: "h ", /*pour x heures restantes*/
  time_m 			: "m ", /*pour x minutes restantes*/
@@ -160,14 +160,14 @@ var theUILang =
  GetTrackerMessage		: "Message reçu du tracker",
  Help				: "Aide",
  Speed				: "Vitesse",
- Dont_add_tname 		: "Ne pas ajouter le nom du torrent au répertoire", 
+ Dont_add_tname 		: "Ne pas ajouter le nom du torrent au répertoire",
  Free_Disk_Space		: "Espace disponible",
  badXMLRPCVersion		: "rTorrent est compilé avec une version incorrecte de la librairie xmlrpc-c, sans le support i8. La version doit être >= 1.11. Certaines fonctionnalités ne seront pas disponibles.",
- badLinkTorTorrent		: "Lien incorrect avec rTorrent. Vérifier qu'il est bien en cours d'exécution. Vérifier la configuration de $scgi_port et de $scgi_host dans config.php et scgi_port dans le fichier de configuration de rTorrent.",
- badUploadsPath 		: "Le serveur Web ne peut pas accéder au dossier torrents en Lecture/Écriture/Execution. Vous ne pouvez pas ajouter de torrent via ruTorrent.",
- badSettingsPath		: "Le serveur Web ne peut pas accéder au dossier de configuration en Lecture/Écriture/Execution. ruTorrent ne peut pas enregistrer votre configuration.",
+ badLinkTorTorrent		: "Lien incorrect avec rTorrent. Vérifiez qu'il soit bien en cours d'exécution. Vérifiez la configuration de $scgi_port et de $scgi_host dans config.php et de scgi_port dans le fichier de configuration de rTorrent.",
+ badUploadsPath 		: "Le serveur Web ne peut pas accéder au dossier des torrents en Lecture/Écriture/Exécution. Vous ne pouvez pas ajouter de torrents via ruTorrent.",
+ badSettingsPath		: "Le serveur Web ne peut pas accéder au dossier de configuration en Lecture/Écriture/Exécution. ruTorrent ne peut pas enregistrer votre configuration.",
  mnu_help			: "À propos",
- badUploadsPath2		: "rTorrent ne peut pas accéder au dossier torrents en Lecture/Écriture. Vous ne pouvez pas ajouter de torrents via ruTorrent.",
+ badUploadsPath2		: "rTorrent ne peut pas accéder au dossier des torrents en Lecture/Écriture. Vous ne pouvez pas ajouter de torrents via ruTorrent.",
  View				: "Voir",
  AsList 			: "En liste",
  AsTree 			: "En arbre",
@@ -180,7 +180,7 @@ var theUILang =
  PCRENotFound			: "Le module PCRE de PHP n'est pas installé. ruTorrent ne fonctionnera pas.",
  addTorrentSuccess		: "Torrent ajouté à rTorrent avec succès.",
  addTorrentFailed		: "Erreur: le torrent n'a pas pu être ajouté à rTorrent.",
- pnlState			: "Etat",
+ pnlState			: "État",
  newLabel			: "Nouvelle étiquette",
  enterLabel			: "Ajouter une étiquette",
  UIEffects			: "Activer les effets de l'UI",
@@ -188,7 +188,7 @@ var theUILang =
  plgName			: "Nom",
  plgStatus			: "État",
  plgLoaded			: "Chargé",
- plgDisabled			: "Desactivé",
+ plgDisabled			: "Désactivé",
  plgVersion			: "Version",
  plgAuthor			: "Auteur",
  plgDescr			: "Description",
@@ -196,7 +196,7 @@ var theUILang =
  pluginCantStart		: "Le plug-in ne peut pas démarrer pour une raison inconnue.",
  doFastResume			: "Démarrage rapide",
  innerSearch			: "Torrents locaux",
- removeTeg			: "Retirer tag",
+ removeTeg			: "Retirer le tag",
  errMustBeInSomeHost		: "ruTorrent et rTorrent doivent être installés sur le même serveur. Le plug-in ne fonctionnera pas.",
  warnMustBeInSomeHost		: "ruTorrent et rTorrent doivent être installés sur le même serveur. Certaines fonctionnalités ne seront pas disponibles.",
  plgShutdown			: "Désactiver",
@@ -240,9 +240,9 @@ var theUILang =
  updateTracker			: "MàJ du tracker",
  scrapeUpdate			: "A été mis à jour",
  trkInterval			: "Intervalle",
- logAutoSwitch			: "Mise au premier automatique de l'onglet 'Log'",
+ logAutoSwitch			: "Montrer automatiquement l'onglet 'Journal'",
  showLabelSize			: "Afficher la taille des étiquettes",
- phpParameterUnavailable	: "La directive PHP 'register_argc_argv' est désactivée. Veuillez l'activer sinon certains plugins ne vont pas fonctionner.",
+ phpParameterUnavailable	: "La directive PHP 'register_argc_argv' est désactivée. Veuillez l'activer sinon certains plugins ne fonctionneront pas correctement.",
  addTorrentFailedURL		: "Erreur: le torrent n'a pas pu être ajouté à rTorrent. Impossible de résoudre l'URL.",
  addTorrentFailedFile		: "Erreur: le torrent n'a pas pu être ajouté à rTorrent. Le contenu récupéré n'est pas un fichier torrent.",
  addTorrentFailedDirectory	: "Erreur: le torrent n'a pas pu être ajouté à rTorrent. Le répertoire de téléchargement spécifié est incorrect.",
@@ -255,11 +255,11 @@ var theUILang =
  webBadSessionError		: "Le plug-in ne fonctionnera pas. Le serveur web n'a pas la permission de lister le répertoire de session de rtorrent.",
  webBadSessionWarning		: "Certaines fonctionnalités ne seront pas disponibles. Le serveur web n'a pas la permission de lister le répertoire de session de rtorrent.",
  Developers			: "Développeurs ",
- Check_new_version		: "Recherche d'une nouvelle version...",
+ Check_new_version		: "Voir si une nouvelle version existe :",
  here				: "ici",
  Num_No 			: "N°", // This means "Number". To be used as header for number count, e.g.: throttle/ratio plugin
  This_screen			: "Cette fenêtre",
- About_program			: "À propos du programme",
+ About_program			: "À propos de ruTorrent",
  Toggle_menu			: "Basculer l'affichage du menu",
  Toggle_details 		: "Basculer l'affichage des details",
  Toggle_categories		: "Basculer l'affichage des categories",
@@ -267,13 +267,15 @@ var theUILang =
  Select_all			: "Sélectionner tout",
  Deselect_all			: "Désélectionner tout",
  showSpeedInTitle		: "Vitesse de transfert dans la barre de titre",
- badTempPath 			: "Le serveur web n'a pas accès en lecture/ecriture/éxécution au répertoire tmp. ruTorrent ne marchera pas.",
- badTempPath2			: "L'utilisateur rTorrent n'a pas accès en lecture/ecriture/éxécution au répertoire tmp. ruTorrent ne marchera pas.",
+ badTempPath 			: "Le serveur web n'a pas accès en lecture/écriture/exécution au répertoire tmp. ruTorrent ne fonctionnera pas.",
+ badTempPath2			: "L'utilisateur rTorrent n'a pas accès en lecture/écriture/exécution au répertoire tmp. ruTorrent ne fonctionnera pas.",
  doRandomizeHash		: "Info hash aléatoire pour faire du 'cross-seeding'",
  Recreate_files 		: "Recréation des fichiers",
  Address			: "Adresse",
  PeerDL 			: "R. Client",
  PeerDownloaded 		: "Reçu Client",
  Save_path			: "Chemin",
- registerMagnet			: "Essayer d'enregistrer la gestion du protocole magnet au démarrage"
+ registerMagnet			: "Essayer d'enregistrer la gestion du protocole magnet au démarrage",
+ linkTorTorrentRestored		: "Connexion à rTorrent établie.",
+ removeAllTegs			: "Retirer tous les tags"
 };

@@ -316,7 +316,7 @@ class rUnpack
 				$outPath.=addslash($name);
 			if($unpackToTemp)
 			{
-				$randTempDirectory = addslash(uniqid(getTempDirectory()."archive-"));
+				$randTempDirectory = addslash( getTempFilename('unpack') );
 				if( $unpack_debug_enabled ) 
 					toLog("Unpack: Unpack to temp enabled. Unpacking to " . $randTempDirectory);
 			}
@@ -335,7 +335,7 @@ class rUnpack
 				$commands[] = 'rm -r "${dir}"';	
 			$task = new rTask( array
 			( 
-				'arg'=>call_user_func('getFileName',delslash($basename)),
+				'arg' => getFileName(delslash($basename)),
 				'requester'=>'unpack',
 				'name'=>'unpack', 
 				'hash'=>$hash, 
@@ -401,7 +401,7 @@ class rUnpack
 					escapeshellarg($arh)." ".
 					escapeshellarg($filename)." ".
 					escapeshellarg(addslash($outPath));
-				$taskArgs['arg'] = call_user_func('getFileName',$filename);
+				$taskArgs['arg'] = getFileName($filename);
 				$task = new rTask( $taskArgs );
 				$ret = $task->start($commands, 0);
 			}
@@ -472,7 +472,7 @@ class rUnpack
 							escapeshellarg($basename)." ".
 							escapeshellarg($outPath)." ".
 							escapeshellarg($pathToUnzip);
-						$taskArgs['arg'] = call_user_func('getFileName',delslash($basename));
+						$taskArgs['arg'] = getFileName(delslash($basename));
 						$task = new rTask( $taskArgs );
 						$ret = $task->start($commands, 0);	
 					}

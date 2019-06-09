@@ -3,7 +3,9 @@ require_once( '../../php/util.php' );
 require_once( '../../php/settings.php' );
 eval( getPluginConf( 'feeds' ) );
 
-$lang = (isset($_REQUEST['lang']) && is_file('lang/'.$_REQUEST['lang'].'.php')) ? $_REQUEST['lang'] : 'en';
+$lang = (isset($_REQUEST['lang']) && 
+	preg_match('/^[A-Za-z]{2}(\-[A-Za-z]{2}|)$/', $_REQUEST['lang']) && 
+	is_file('lang/'.$_REQUEST['lang'].'.php')) ? $_REQUEST['lang'] : 'en';
 $theUILang = array();
 require_once( 'lang/'.$lang.'.php' );
 
@@ -105,6 +107,11 @@ function formatItemDescription($torrent)
 	if(!empty($torrent["comment"]))
 		$desc.='<fieldset><legend>'.$theUILang["Comment"].'</legend>'.htmlspecialchars($torrent["comment"],ENT_COMPAT,"UTF-8").'</fieldset>';
 	return($desc);
+}
+
+function sortByPubDate( $a, $b )
+{
+	return( (intval($a["pubDate"]) > intval($b["pubDate"])) ? -1 : ((intval($a["pubDate"]) < intval($b["pubDate"])) ? 1 : strcmp($a["title"],$b["title"])) );
 }
 
 $mode = (isset($_REQUEST['mode'])) ? $_REQUEST['mode'] : 'all';
@@ -222,7 +229,7 @@ if($req->success())
 		}
 		$items[] = $item;
 	}
-	usort( $items, create_function( '$a,$b', 'return( (intval($a["pubDate"]) > intval($b["pubDate"])) ? -1 : ((intval($a["pubDate"]) < intval($b["pubDate"])) ? 1 : strcmp($a["title"],$b["title"])) );'));
+	usort( $items, "sortByPubDate");
 	foreach( $items as $item )
 	{
 		$ret.="\r\n<item>";

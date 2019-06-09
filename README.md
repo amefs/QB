@@ -120,7 +120,7 @@ This script has the following features
 * LShell - (LimitedShell for additional users to ssh)
 * mktorrent
 * pureftp - vsftp (CuteFTP multi-segmented download friendly)
-* __ruTorrent 3.7__ + official plugins
+* __ruTorrent 3.8__ + official plugins
 * __rTorrent 0.9.6 + libTorrrent 0.13.6__
 * SSH Server (for SSH terminal and sFTP connections)
 * HTTPS - Web Console
@@ -131,6 +131,7 @@ This script has the following features
 * ConfigServer Firewall
 * __Deluge (Web-client and thin-client)__
 * Emby
+* File Browser
 * Jackett
 * Lidarr
 * NextCloud

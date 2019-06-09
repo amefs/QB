@@ -3,7 +3,7 @@
  *
  * Initial Author: Penknife (penknife1@gmail.com)
  *
- * Author: Dare (piczok@gmail.com) 
+ * Author: Dare (piczok@gmail.com)
  * Author: Kolor (kolor@superseedbox.co.uk)
  */
 
@@ -15,7 +15,7 @@ var theUILang =
  BitTorrent			: "BitTorrent",
  Advanced			: "Zaawansowane",
  User_Interface 		: "Interfejs użytkownika",
- Confirm_del_torr		: "Potwierdzaj usunięcie torrentów",
+ Confirm_del_torr		: "Potwierdzaj usuwanie torrentów",
  Update_GUI_every		: "Aktualizuj interfejs co",
  ms				: "ms",
  Alt_list_bckgnd		: "Alternatywny kolor tła listy",
@@ -53,7 +53,7 @@ var theUILang =
  Seeds				: "Seedy",
  Remaining			: "Pozostało",
  Priority			: "Priorytet",
- Not_torrent_file		: "Plik musi być plikem .torrent",
+ Not_torrent_file		: "Plik musi być plikiem .torrent",
  Pausing			: "Pauza",
  Seeding			: "Udostępnianie",
  Downloading			: "Pobieranie",
@@ -68,14 +68,14 @@ var theUILang =
  Stop				: "Stop",
  Force_recheck			: "Sprawdź ponownie",
  New_label			: "Nowa...",
- Remove_label			: "Usuń etykiete",
+ Remove_label			: "Usuń etykietę",
  Labels 			: "Etykiety",
  Remove 			: "Usuń",
  Delete_data			: "Skasuj dane",
  Remove_and			: "Usuń i...",
  Details			: "Szczegóły...",
  Properties			: "Właściwości...",
- of				: "z", //this two creates line 
+ of				: "z", //this two creates line
  connected			: "połączonych", //  XX of YY connected
  High_priority			: "Wysoki",
  Normal_priority		: "Normalny",
@@ -98,7 +98,7 @@ var theUILang =
  Bandwidth_sett 		: "Ustawienia łącza",
  Number_ul_slots		: "Liczba slotów wysyłania",
  Peer_ex			: "Wymiana peerów",
- Enter_label_prom		: "Dodaj nową etykiete dla wybranych torrentów",
+ Enter_label_prom		: "Dodaj nową etykietę dla wybranych torrentów",
  Remove_torrents		: "Usuń torrent",
  Rem_torrents_prompt		: "Czy na pewno chcesz usunąć wybrane torrenty?",
  All				: "Wszystkie",
@@ -106,7 +106,7 @@ var theUILang =
  Inactive			: "Nieaktywne",
  No_label			: "Bez etykiety",
  Transfer			: "Transfer",
- Time_el			: "Upłyneło",
+ Time_el			: "Upłynęło",
  Share_ratio			: "Ratio",
  Down_speed			: "Prędkość pobierania",
  Ul_speed			: "Prędkość wysyłania",
@@ -150,7 +150,7 @@ var theUILang =
  Glob_max_files 		: "Maksymalna liczba otwartych plików",
  Glob_max_http			: "Maksymalna liczba otwartych połączeń http",
  Other_sett			: "Inne",
- Directory_For_Dl		: "Domyślny katalog pobierań",
+ Directory_For_Dl		: "Domyślny katalog pobierania",
  Check_hash			: "Sprawdzaj sumę kontrolą po pobraniu",
  Hash				: "Hash",
  DisableTracker 		: "Wyłącz",
@@ -161,7 +161,7 @@ var theUILang =
  GetTrackerMessage		: "Odbieraj wiadomości z trackera",
  Help				: "Pomoc",
  Speed				: "Prędkość",
- Dont_add_tname 		: "Nie dodawaj nazwy torrenta do ścieżki", 
+ Dont_add_tname 		: "Nie dodawaj nazwy torrenta do ścieżki",
  Free_Disk_Space		: "Wolne miejsce na dysku",
  badXMLRPCVersion		: "rTorrent został skompilowany ze złą wersją biblioteki xmlrpc-c, bez wsparcia i8. Wersja musi być >= 1.11. Niektóre funkcje będą niedostępne.",
  badLinkTorTorrent		: "Brak połączenia z rTorrent. Sprawdź czy jest uruchomiony. Sprawdź ustawienia $scgi_port i $scgi_host w config.php oraz scgi_port w pliku konfiguracyjnym rTorrent.",
@@ -223,7 +223,7 @@ var theUILang =
  rTorrentBadScriptPath		: "Wtyczka nie będzie działać. Użytkownik rTorrent musi posiadać uprawnienia odczytu/wykonywania pliku",
  rTorrentBadPHPScriptPath	: "Wtyczka nie będzie działać. Użytkownik rTorrent musi posiadać uprawnienia odczytu pliku",
  dependenceError		: "Wtyczka nie będzie działać. Wymaga ona wtyczki",
- peerAdd			: "Dodaj peera..",
+ peerAdd			: "Dodaj peera...",
  peerBan			: "Zablokuj",
  peerKick			: "Wykop",
  peerSnub			: "Ignoruj",
@@ -276,5 +276,7 @@ var theUILang =
  PeerDL 			: "Peer prędkość",
  PeerDownloaded 		: "Peer pobrał",
  Save_path			: "Ścieżka zapisu",
- registerMagnet			: "Próbuj dodać obsługę linków magnet przy stacie"
+ registerMagnet			: "Próbuj dodać obsługę linków magnet przy starcie",
+ linkTorTorrentRestored		: "Nawiązano połączenie z rTorrent.",
+ removeAllTegs			: "Usuń wszystkie znaczniki"
 };

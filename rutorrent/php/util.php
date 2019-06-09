@@ -240,6 +240,11 @@ function safe_json_encode($value)
 	return(!function_exists('json_last_error') || json_last_error()==JSON_ERROR_NONE ? $encoded : json_encode(utf8ize($value)));
 }
 
+function sortArrayTime( $a, $b )
+{
+	return( ($a["time"] > $b["time"]) ? 1 : (($a["time"] < $b["time"]) ? -1 : 0) );
+}
+
 function toLog( $str )
 {
 	global $log_file;
@@ -381,7 +386,8 @@ function getPluginConf($plugin)
 
 function getLogin()
 {
-	return( (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER'])) ? strtolower($_SERVER['REMOTE_USER']) : '' );
+	return( (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER'])) ? 
+		preg_replace( "/[^a-z0-9\-_]/", "_", strtolower($_SERVER['REMOTE_USER']) ) : '' );
 }
 
 function getUser()
@@ -446,6 +452,21 @@ function getUniqueUploadedFilename($fname)
 	return( $overwriteUploadedTorrents ? $fname : getUniqueFilename($fname));
 }
 
+function getTempFilename($purpose = '', $extension = null)
+{
+	do
+	{
+		$fname = uniqid(getTempDirectory().implode( '-', array_filter(array
+		(
+			"rutorrent",
+			$purpose,
+			getLogin(),
+			getmypid()
+		))),true).( is_null($extension) ? '' : ".$extension" );
+	} while(file_exists($fname));	// this is no guarantee, of course...
+	return($fname);
+}
+
 function getExternal($exe)
 {
 	global $pathToExternals;
@@ -505,7 +526,7 @@ function cachedEcho( $content, $type = null, $cacheable = false, $exit = true )
 			{
 				$gzip = getExternal('gzip');
 				header('Content-Encoding: '.$encoding); 
-				$randName = uniqid(getTempDirectory()."rutorrent-ans-");
+				$randName = getTempFilename('answer');
 				file_put_contents($randName,$content);
 				passthru( $gzip." -".PHP_GZIP_LEVEL." -c < ".$randName );
 				unlink($randName);

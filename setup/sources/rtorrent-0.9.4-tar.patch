@@ -1,6 +1,43 @@
-diff -Nur rtorrent-tar/rak/socket_address.h rtorrent-tar-ipv6/rak/socket_address.h
---- rtorrent-tar/rak/socket_address.h	2012-01-19 23:18:01.000000000 +1300
-+++ rtorrent-tar-ipv6/rak/socket_address.h	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/configure.ac rtorrent-0.9.4-patched/configure.ac
+--- rtorrent-0.9.4/configure.ac	2018-12-29 18:14:50.263168778 -0500
++++ rtorrent-0.9.4-patched/configure.ac	2018-12-29 18:15:10.247153105 -0500
+@@ -4,7 +4,7 @@
+ 
+ AM_INIT_AUTOMAKE
+ AC_CONFIG_HEADERS(config.h)
+-AM_PATH_CPPUNIT(1.9.6)
++
+ 
+ AC_PROG_CXX
+ AC_PROG_LIBTOOL
+@@ -37,17 +37,13 @@
+    AC_MSG_ERROR([requires either NcursesW or Ncurses library])
+ fi
+ 
+-CFLAGS="$CFLAGS $PTHREAD_CFLAGS $CURSES_CFLAGS"
+-CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS $CURSES_CFLAGS"
+-LIBS="$PTHREAD_LIBS $CURSES_LIB $LIBS"
+-
+-PKG_CHECK_MODULES([libcurl], libcurl >= 7.15.4,
+-	          CXXFLAGS="$CXXFLAGS $libcurl_CFLAGS";
+-		  LIBS="$LIBS $libcurl_LIBS")
+-
+-PKG_CHECK_MODULES([libtorrent], libtorrent >= 0.13.4,
+-	          CXXFLAGS="$CXXFLAGS $libtorrent_CFLAGS";
+-		  LIBS="$LIBS $libtorrent_LIBS")
++PKG_CHECK_MODULES([LIBCURL], [libcurl], , [LIBCURL_CHECK_CONFIG])
++PKG_CHECK_MODULES([CPPUNIT], [cppunit],, [no_cppunit="yes"])
++PKG_CHECK_MODULES([DEPENDENCIES], [libtorrent >= 0.13.4])
++
++LIBS="$PTHREAD_LIBS $CURSES_LIB $CPPUNIT_LIBS $LIBCURL $LIBCURL_LIBS $DEPENDENCIES_LIBS $LIBS"
++CFLAGS="$CFLAGS $PTHREAD_CFLAGS $CPPUNIT_CFLAGS $LIBCURL_CPPFLAGS $LIBCURL_CFLAGS $DEPENDENCIES_CFLAGS $CURSES_CFLAGS"
++CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS $CPPUNIT_CFLAGS $LIBCURL_CPPFLAGS $LIBCURL_CFLAGS $DEPENDENCIES_CFLAGS $CURSES_CFLAGS"
+ 
+ AC_LANG_PUSH(C++)
+ TORRENT_WITH_XMLRPC_C
+diff -Nur rtorrent-0.9.4/rak/socket_address.h rtorrent-0.9.4-patched/rak/socket_address.h
+--- rtorrent-0.9.4/rak/socket_address.h	2018-12-29 18:14:52.811166728 -0500
++++ rtorrent-0.9.4-patched/rak/socket_address.h	2018-12-29 18:15:11.503152151 -0500
 @@ -145,7 +145,7 @@
    };
  };
@@ -287,9 +324,9 @@ diff -Nur rtorrent-tar/rak/socket_address.h rtorrent-tar-ipv6/rak/socket_address
  }
  
  #endif
-diff -Nur rtorrent-tar/src/command_download.cc rtorrent-tar-ipv6/src/command_download.cc
---- rtorrent-tar/src/command_download.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/command_download.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/command_download.cc rtorrent-0.9.4-patched/src/command_download.cc
+--- rtorrent-0.9.4/src/command_download.cc	2018-12-29 18:14:54.043165742 -0500
++++ rtorrent-0.9.4-patched/src/command_download.cc	2018-12-29 18:15:12.071151720 -0500
 @@ -308,7 +308,13 @@
    if (download->download()->info()->is_private())
      throw torrent::input_error("Download is private.");
@@ -316,9 +353,9 @@ diff -Nur rtorrent-tar/src/command_download.cc rtorrent-tar-ipv6/src/command_dow
  }
  
  torrent::Object
-diff -Nur rtorrent-tar/src/command_network.cc rtorrent-tar-ipv6/src/command_network.cc
---- rtorrent-tar/src/command_network.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/command_network.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/command_network.cc rtorrent-0.9.4-patched/src/command_network.cc
+--- rtorrent-0.9.4/src/command_network.cc	2018-12-29 18:14:54.651165257 -0500
++++ rtorrent-0.9.4-patched/src/command_network.cc	2018-12-29 18:15:12.335151520 -0500
 @@ -172,8 +172,13 @@
          lt_log_print(torrent::LOG_RPC_EVENTS,
                       "The SCGI socket has not been bound to any address and likely poses a security risk.");
@@ -334,9 +371,9 @@ diff -Nur rtorrent-tar/src/command_network.cc rtorrent-tar-ipv6/src/command_netw
            throw torrent::input_error("Could not bind address: " + std::string(rak::address_info::strerror(err)) + ".");
  
          saPtr = ai->address();
-diff -Nur rtorrent-tar/src/command_peer.cc rtorrent-tar-ipv6/src/command_peer.cc
---- rtorrent-tar/src/command_peer.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/command_peer.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/command_peer.cc rtorrent-0.9.4-patched/src/command_peer.cc
+--- rtorrent-0.9.4/src/command_peer.cc	2018-12-29 18:14:54.775165159 -0500
++++ rtorrent-0.9.4-patched/src/command_peer.cc	2018-12-29 18:15:12.363151499 -0500
 @@ -69,7 +69,13 @@
  
  torrent::Object
@@ -352,9 +389,9 @@ diff -Nur rtorrent-tar/src/command_peer.cc rtorrent-tar-ipv6/src/command_peer.cc
  }
  
  torrent::Object
-diff -Nur rtorrent-tar/src/core/curl_get.cc rtorrent-tar-ipv6/src/core/curl_get.cc
---- rtorrent-tar/src/core/curl_get.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/core/curl_get.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/core/curl_get.cc rtorrent-0.9.4-patched/src/core/curl_get.cc
+--- rtorrent-0.9.4/src/core/curl_get.cc	2018-12-29 18:14:55.343164705 -0500
++++ rtorrent-0.9.4-patched/src/core/curl_get.cc	2018-12-29 18:15:12.907151086 -0500
 @@ -91,8 +91,13 @@
    curl_easy_setopt(m_handle, CURLOPT_NOSIGNAL,       (long)1);
    curl_easy_setopt(m_handle, CURLOPT_FOLLOWLOCATION, (long)1);
@@ -388,9 +425,9 @@ diff -Nur rtorrent-tar/src/core/curl_get.cc rtorrent-tar-ipv6/src/core/curl_get.
  void
  CurlGet::receive_timeout() {
    return m_stack->transfer_done(m_handle, "Timed out");
-diff -Nur rtorrent-tar/src/core/curl_get.h rtorrent-tar-ipv6/src/core/curl_get.h
---- rtorrent-tar/src/core/curl_get.h	2013-08-27 02:17:56.000000000 +1200
-+++ rtorrent-tar-ipv6/src/core/curl_get.h	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/core/curl_get.h rtorrent-0.9.4-patched/src/core/curl_get.h
+--- rtorrent-0.9.4/src/core/curl_get.h	2018-12-29 18:14:55.475164601 -0500
++++ rtorrent-0.9.4-patched/src/core/curl_get.h	2018-12-29 18:15:12.919151078 -0500
 @@ -57,6 +57,10 @@
  
    void               start();
@@ -412,9 +449,9 @@ diff -Nur rtorrent-tar/src/core/curl_get.h rtorrent-tar-ipv6/src/core/curl_get.h
  
    rak::priority_item m_taskTimeout;
    
-diff -Nur rtorrent-tar/src/core/curl_stack.cc rtorrent-tar-ipv6/src/core/curl_stack.cc
---- rtorrent-tar/src/core/curl_stack.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/core/curl_stack.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/core/curl_stack.cc rtorrent-0.9.4-patched/src/core/curl_stack.cc
+--- rtorrent-0.9.4/src/core/curl_stack.cc	2018-12-29 18:14:55.615164489 -0500
++++ rtorrent-0.9.4-patched/src/core/curl_stack.cc	2018-12-29 18:15:13.023150999 -0500
 @@ -131,6 +131,20 @@
    if (msg->msg != CURLMSG_DONE)
      throw torrent::internal_error("CurlStack::receive_action() msg->msg != CURLMSG_DONE.");
@@ -436,9 +473,9 @@ diff -Nur rtorrent-tar/src/core/curl_stack.cc rtorrent-tar-ipv6/src/core/curl_st
    transfer_done(msg->easy_handle,
                  msg->data.result == CURLE_OK ? NULL : curl_easy_strerror(msg->data.result));
  
-diff -Nur rtorrent-tar/src/core/manager.cc rtorrent-tar-ipv6/src/core/manager.cc
---- rtorrent-tar/src/core/manager.cc	2014-05-15 02:30:51.000000000 +1200
-+++ rtorrent-tar-ipv6/src/core/manager.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/core/manager.cc rtorrent-0.9.4-patched/src/core/manager.cc
+--- rtorrent-0.9.4/src/core/manager.cc	2018-12-29 18:14:56.699163628 -0500
++++ rtorrent-0.9.4-patched/src/core/manager.cc	2018-12-29 18:15:13.615150552 -0500
 @@ -223,7 +223,13 @@
    int err;
    rak::address_info* ai;
@@ -466,9 +503,9 @@ diff -Nur rtorrent-tar/src/core/manager.cc rtorrent-tar-ipv6/src/core/manager.cc
      throw torrent::input_error("Could not set local address: " + std::string(rak::address_info::strerror(err)) + ".");
    
    try {
-diff -Nur rtorrent-tar/src/display/window_peer_list.cc rtorrent-tar-ipv6/src/display/window_peer_list.cc
---- rtorrent-tar/src/display/window_peer_list.cc	2012-01-19 23:18:01.000000000 +1300
-+++ rtorrent-tar-ipv6/src/display/window_peer_list.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/display/window_peer_list.cc rtorrent-0.9.4-patched/src/display/window_peer_list.cc
+--- rtorrent-0.9.4/src/display/window_peer_list.cc	2018-12-29 18:14:59.751161221 -0500
++++ rtorrent-0.9.4-patched/src/display/window_peer_list.cc	2018-12-29 18:15:15.207149354 -0500
 @@ -68,7 +68,11 @@
    int x = 2;
    int y = 0;
@@ -505,9 +542,9 @@ diff -Nur rtorrent-tar/src/display/window_peer_list.cc rtorrent-tar-ipv6/src/dis
  
      m_canvas->print(x, y, "%.1f", (double)p->up_rate()->rate() / 1024); x += 7;
      m_canvas->print(x, y, "%.1f", (double)p->down_rate()->rate() / 1024); x += 7;
-diff -Nur rtorrent-tar/src/utils/socket_fd.cc rtorrent-tar-ipv6/src/utils/socket_fd.cc
---- rtorrent-tar/src/utils/socket_fd.cc	2012-01-19 23:18:01.000000000 +1300
-+++ rtorrent-tar-ipv6/src/utils/socket_fd.cc	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/utils/socket_fd.cc rtorrent-0.9.4-patched/src/utils/socket_fd.cc
+--- rtorrent-0.9.4/src/utils/socket_fd.cc	2018-12-29 18:15:08.039154792 -0500
++++ rtorrent-0.9.4-patched/src/utils/socket_fd.cc	2018-12-29 18:15:18.855146627 -0500
 @@ -71,6 +71,11 @@
    check_valid();
    int opt = p;
@@ -637,9 +674,9 @@ diff -Nur rtorrent-tar/src/utils/socket_fd.cc rtorrent-tar-ipv6/src/utils/socket
  }
  
  // unsigned int
-diff -Nur rtorrent-tar/src/utils/socket_fd.h rtorrent-tar-ipv6/src/utils/socket_fd.h
---- rtorrent-tar/src/utils/socket_fd.h	2012-01-19 23:18:01.000000000 +1300
-+++ rtorrent-tar-ipv6/src/utils/socket_fd.h	2014-07-04 10:45:16.990399678 +1200
+diff -Nur rtorrent-0.9.4/src/utils/socket_fd.h rtorrent-0.9.4-patched/src/utils/socket_fd.h
+--- rtorrent-0.9.4/src/utils/socket_fd.h	2018-12-29 18:15:08.155154704 -0500
++++ rtorrent-0.9.4-patched/src/utils/socket_fd.h	2018-12-29 18:15:18.911146586 -0500
 @@ -80,6 +80,7 @@
    bool                bind(const rak::socket_address& sa);
    bool                bind(const rak::socket_address& sa, unsigned int length);

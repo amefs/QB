@@ -30,10 +30,10 @@ function _removeDeluge() {
   systemctl disable deluge-web@* > /dev/null 2>&1
   rm /etc/systemd/system/deluged@.service > /dev/null 2>&1
   rm /etc/systemd/system/deluge-web@.service > /dev/null 2>&1
-  rm /usr/lib/python2.7/dist-packages/deluge-1.3.15-py2.7.egg > /dev/null 2>&1
-  rm /usr/bin/deluge
-  rm /usr/bin/deluged
-  rm /usr/bin/deluge-web
+  sudo rm $(cat /install/.deluge.install.record)
+  rm /install/.deluge.install.record
+  rm -rf /usr/lib/python2.7/dist-packages/deluge-1.3.15-py2.7.egg
+  find /usr/local/share -name deluge* | xargs rm -f
   rm -rf /srv/rutorrent/home/${username}.deluge.downloads
   sudo rm /install/.deluge.lock
 

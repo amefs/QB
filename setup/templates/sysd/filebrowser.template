@@ -1,0 +1,14 @@
+[Unit]
+Description=File Browser
+After=network.target
+
+
+[Service]
+User=%I
+ExecStart=/usr/local/bin/filebrowser -d /home/%i/.config/filebrowser/filebrowser.db
+ExecStop=/usr/bin/killall -w -s 9 /usr/local/bin/filebrowser
+Restart=on-failure
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target

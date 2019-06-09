@@ -255,6 +255,7 @@ $btsync = processExists("resilio-sync",rslsync);
 $deluged = processExists("deluged",$username);
 $delugedweb = processExists("deluge-web",$username);
 $emby = processExists("emby-server",$username);
+$filebrowser = processExists("filebrowser",$username);
 $headphones = processExists("headphones",$username);
 $irssi = processExists("irssi",$username);
 $lidarr = processExists("lidarr",$username);
@@ -304,6 +305,7 @@ if(file_exists('/srv/rutorrent/home/custom/url.override.php')){
   //if ($dwssl == "false") { $dwURL = "http://" . $_SERVER['HTTP_HOST'] . ":$dwport"; }
   $dwURL = "https://" . $_SERVER['HTTP_HOST'] . "/deluge/";
   $embyURL = "https://" . $_SERVER['HTTP_HOST'] . "/emby";
+  $filebrowserURL = "https://" . $_SERVER['HTTP_HOST'] . "/filebrowser/";
   $headphonesURL = "https://" . $_SERVER['HTTP_HOST'] . "/headphones/home";
   $jackettURL = "https://" . $_SERVER['HTTP_HOST'] . "/jackett/UI/Dashboard";
   $lidarrURL = "https://" . $_SERVER['HTTP_HOST'] . "/lidarr";
@@ -348,6 +350,8 @@ case 0:
     $cbodyd .= $deluged;
   $delugedweb = isEnabled("deluge-web", $username);
     $cbodydw .= $delugedweb;
+  $filebrowser = isEnabled("filebrowser", $username);
+    $cbodyfb .= $filebrowser;
   $shellinabox = isEnabled("shellinabox",shellinabox);
     $wcbodyb .= $shellinabox;
   $btsync = isEnabled("resilio-sync",rslsync);
@@ -417,6 +421,9 @@ case 66:
     } elseif ($process == "emby-server"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl start $process");
+    } elseif ($process == "filebrowser"){
+      shell_exec("sudo systemctl enable $process");
+      shell_exec("sudo systemctl start $process");
     } elseif ($process == "headphones"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl start $process");
@@ -466,6 +473,9 @@ case 77:
     } elseif ($process == "emby-server"){
       shell_exec("sudo systemctl stop $process");
       shell_exec("sudo systemctl disable $process");
+    } elseif ($process == "filebrowser"){
+      shell_exec("sudo systemctl stop $process");
+      shell_exec("sudo systemctl disable $process");
     } elseif ($process == "headphones"){
       shell_exec("sudo systemctl stop $process");
       shell_exec("sudo systemctl disable $process");
@@ -513,6 +523,9 @@ case 88:
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl restart $process");
     } elseif ($process == "emby-server"){
+      shell_exec("sudo systemctl enable $process");
+      shell_exec("sudo systemctl restart $process");
+    } elseif ($process == "filebrowser"){
       shell_exec("sudo systemctl enable $process");
       shell_exec("sudo systemctl restart $process");
     } elseif ($process == "headphones"){

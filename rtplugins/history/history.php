@@ -29,12 +29,16 @@ class rHistoryData
 			unset($this->data[$hash]);
 		$this->store();
 	}
+	static protected function sortByActionTime( $a, $b )
+	{
+		return($b["action_time"]-$a["action_time"]);
+	}
 	public function add( $e, $limit )
 	{
 		$e["action_time"] = time();
 		$e["hash"] = md5(serialize($e));
 		$this->data[$e["hash"]] = $e;
-		uasort($this->data, create_function( '$a,$b', 'return $b["action_time"]-$a["action_time"];' ));
+		uasort($this->data, array(__CLASS__,"sortByActionTime"));
 		$count = count($this->data);
 		if($limit<3)
 			$limit = 500;
@@ -128,7 +132,7 @@ class rHistory
 		global $rootPath;
 		if($this->log["addition"] || ($this->log["pushbullet_enabled"] && $this->log["pushbullet_addition"]))
 		{
-			$addCmd = getCmd('execute').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',1,$'.
+			$addCmd = getCmd('execute.nothrow.bg').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',1,$'.
 				getCmd('d.get_name').'=,$'.getCmd('d.get_size_bytes').'=,$'.getCmd('d.get_bytes_done').'=,$'.
 				getCmd('d.get_up_total').'=,$'.getCmd('d.get_ratio').'=,$'.getCmd('d.get_creation_date').'=,$'.
 				getCmd('d.get_custom').'=addtime,$'.getCmd('d.get_custom').'=seedingtime'.
@@ -139,7 +143,7 @@ class rHistory
 		else
 			$addCmd = getCmd('cat=');
 		if($this->log["finish"] || ($this->log["pushbullet_enabled"] && $this->log["pushbullet_finish"]))
-			$finCmd = getCmd('execute').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',2,$'.
+			$finCmd = getCmd('execute.nothrow.bg').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',2,$'.
 				getCmd('d.get_name').'=,$'.getCmd('d.get_size_bytes').'=,$'.getCmd('d.get_bytes_done').'=,$'.
 				getCmd('d.get_up_total').'=,$'.getCmd('d.get_ratio').'=,$'.getCmd('d.get_creation_date').'=,$'.
 				getCmd('d.get_custom').'=addtime,$'.getCmd('d.get_custom').'=seedingtime'.
@@ -149,7 +153,7 @@ class rHistory
 		else
 			$finCmd = getCmd('cat=');
 		if($this->log["deletion"] || ($this->log["pushbullet_enabled"] && $this->log["pushbullet_deletion"]))
-			$delCmd = getCmd('execute').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',3,$'.
+			$delCmd = getCmd('execute.nothrow.bg').'={'.getPHP().','.$rootPath.'/plugins/history/update.php'.',3,$'.
 				getCmd('d.get_name').'=,$'.getCmd('d.get_size_bytes').'=,$'.getCmd('d.get_bytes_done').'=,$'.
 				getCmd('d.get_up_total').'=,$'.getCmd('d.get_ratio').'=,$'.getCmd('d.get_creation_date').'=,$'.
 				getCmd('d.get_custom').'=addtime,$'.getCmd('d.get_custom').'=seedingtime'.

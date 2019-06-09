@@ -72,6 +72,15 @@
                       <?php } ?>
                     </tr>
                     <tr>
+                      <td>filebrowser</td>
+                      <td><?php echo T('FILEBROWSER'); ?></td>
+                      <?php if (file_exists("/install/.filebrowser.lock")) { ?>
+                        <td style="vertical-align: middle; text-align: center"><a href="javascript:void()" data-toggle="modal" data-target="#filebrowserRemovalConfirm" class="btn btn-xs btn-success"><?php echo T('INSTALLED'); ?></a></td>
+                      <?php } else { ?>
+                        <td style="vertical-align: middle; text-align: center"><a href="?installpackage-filebrowser=true" data-toggle="modal" data-target="#sysResponse" id="filebrowserInstall" class="btn btn-xs btn-default"><?php echo T('INSTALL'); ?></a></td>
+                      <?php } ?>
+                    </tr>
+                    <tr>
                       <td>Headphones</td>
                       <td><?php echo T('HEADPHONES'); ?></td>
                       <?php if (file_exists("/install/.headphones.lock")) { ?>

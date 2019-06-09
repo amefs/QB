@@ -78,7 +78,9 @@ fi
 }
 
 function _bashrc() {
+  mv /root/.bashrc /root/.bashrc.bak
   cp -a ${local_setup}templates/bashrc.template /root/.bashrc
+  mv /root/.profile /root/.profile.bak
   cp -a ${local_setup}templates/profile.template /root/.profile
 }
 
@@ -282,6 +284,18 @@ function _updatedashboard() {
       #rm -f /srv/rutorrent/home/lang/*.php
       touch /srv/rutorrent/home/db/.smoked.lock
     fi
+
+  fi
+
+  # post by EFS
+  if [[ -f /srv/rutorrent/home/widgets/disk_datah.php ]]; then
+    cd /srv/rutorrent/home/widgets && rm disk_datah.php
+    cp -f ${local_dashboard}widgets/disk_datah.php ./disk_datah.php
+    chown -R www-data:www-data /srv/rutorrent/home/widgets
+  else
+    cd /srv/rutorrent/home/widgets && rm disk_data.php
+    cp -f ${local_dashboard}widgets/disk_data.php ./disk_data.php
+    chown -R www-data:www-data /srv/rutorrent/home/widgets
   fi
 
 }
@@ -368,6 +382,7 @@ function _perms() {
 
 function _fin() {
   service apache2 reload >/dev/null 2>&1
+  service php7.0-fpm restart >/dev/null 2>&1
   source ~/.profile
   source ~/.bashrc
   echo

@@ -272,13 +272,11 @@ function _askrtorrent() {
   echo -e "1) rtorrent ${green}0.9.6 (with ipv6 support)${normal}"
   echo -e "2) rtorrent ${green}0.9.4 (with ipv6 support)${normal}"
   echo -e "3) rtorrent ${green}0.9.7 (with ipv6 support)${normal}"
-  echo -e "4) rtorrent ${green}0.9.3${normal}"
   echo -ne "${bold}${yellow}What version of rtorrent do you want?${normal} (Default ${green}1${normal}): "; read version
   case $version in
     1 | "") RTVERSION=0.9.6;LTORRENT=0.13.6  ;;
     2) RTVERSION=0.9.4;LTORRENT=0.13.4  ;;
     3) RTVERSION=0.9.7;LTORRENT=0.13.7 ;;
-    4) RTVERSION=0.9.3;LTORRENT=0.13.3 ;;
     *) RTVERSION=0.9.6;LTORRENT=0.13.6  ;;
   esac
   echo "We will be using rtorrent-${green}$RTVERSION${normal}/libtorrent-${green}$LTORRENT${normal}"
@@ -308,7 +306,7 @@ function _askqb() {
 echo -e "${green}00)${normal} Do not install qBittorrent${normal}"
 echo -e "${green}01)${normal} qBittorrent ${green}3.3.16${normal}"
 echo -e "${green}02)${normal} qBittorrent ${green}4.0.4${normal}"
-echo -e "${green}03)${normal} qBittorrent ${green}4.1.3${normal}"
+echo -e "${green}03)${normal} qBittorrent ${green}4.1.5${normal}"
 echo -e "${green}04)${normal} qBittorrent ${bold}${green}latest version${normal}"
 echo -ne "${bold}${yellow}Which version of qBittorrent do you want?${normal} (Default ${green}0${normal}): " ; read -e version
 
@@ -316,7 +314,7 @@ case $version in
     00 | 0) QBVERSION=no ;;
     01 | 1) QBVERSION=3.3.16;qbburst=no ;;
     02 | 2) QBVERSION=4.0.4;qbburst=no ;;
-    03 | 3) QBVERSION=4.1.3;qbburst=no ;;
+    03 | 3) QBVERSION=4.1.5;qbburst=no ;;
     04 | 4) QBVERSION=`curl -i -s https://www.qbittorrent.org/ | grep -Eo "Latest:.*" | grep -Eo "[0-9.]+"`;qbburst=no ;;
     * | "") QBVERSION=no ;;
 esac
@@ -328,9 +326,20 @@ echo "${bold}${green}qBittorrent ${QBVERSION}${normal} ${bold}will be installed$
 function _asktr() {
   echo -ne "${bold}${yellow}Would you like to install transmission? ${normal} [y]es or [${green}n${normal}]o: "; read responce
   case $responce in
-    [yY] | [yY][Ee][Ss]) tr=yes ;;
-    [nN] | [nN][Oo] | "" ) tr=no ;;
+    [yY] | [yY][Ee][Ss]) tr=yes; echo "${bold}transmission will be installed${normal}" ;;
+    [nN] | [nN][Oo] | "" ) tr=no; echo "${bold}transmission will not be installed${normal}" ;;
     *) tr=no ;;
+  esac
+  echo
+}
+
+# install filebrowser question (9.5)
+function _askfb() {
+  echo -ne "${bold}${yellow}Would you like to install filebrowser? ${normal} [${green}y${normal}]es or [n]o: "; read responce
+  case $responce in
+    [yY] | [yY][Ee][Ss] | "" ) fb=yes; echo "${bold}filebrowser will be installed${normal}" ;;
+    [nN] | [nN][Oo]) fb=no; echo "${bold}filebrowser will be installed${normal}" ;;
+    *) fb=no ;;
   esac
   echo
 }
@@ -383,7 +392,7 @@ function _askvsftpd() {
   echo
 }
 
-# ban public trackers [iptables option] (11)
+# ban public trackers [iptables option] (13)
 function _denyhosts() {
   echo -ne "${bold}${yellow}Block Public Trackers?${normal}: [${green}y${normal}]es or [n]o: "; read responce
   case $responce in
@@ -462,7 +471,7 @@ function _updates() {
 
   if [[ -e /etc/ssh/sshd_config ]] && [[ ${chport} == "yes" ]]; then
     echo "Port 4747" /etc/ssh/sshd_config >> /dev/null 2>&1
-    sed -i 's/Port 22/Port 4747/g' /etc/ssh/sshd_config
+    sed -i 's/#*Port 22/Port 4747/g' /etc/ssh/sshd_config
     #sed -i 's/SendEnv LANG LC_*/#SendEnv LANG LC_*/g' /etc/ssh/ssh_config
     #sed -i 's/AcceptEnv LANG LC_*/#AcceptEnv LANG LC_*/g' /etc/ssh/sshd_config
     service ssh restart >>"${OUTTO}" 2>&1
@@ -705,22 +714,24 @@ function _libtorrent() {
   cp ${local_setup}sources/libtorrent-${LTORRENT}.tar.gz .
   tar -xzvf libtorrent-${LTORRENT}.tar.gz >>"${OUTTO}" 2>&1
   cd libtorrent-${LTORRENT}
-  ./autogen.sh >>"${OUTTO}" 2>&1
-  if [ $LTORRENT == 0.13.4 ]; then
-  cp ${local_setup}sources/libtorrent-0.13.4-tar.patch .
-  patch -p1 < libtorrent-*-tar.patch >>"${OUTTO}" 2>&1
-  ./configure --disable-debug  --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2p -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2p/include" --enable-ipv6 >>"${OUTTO}" 2>&1
-  elif [ $LTORRENT == 0.13.6 ]; then
-  ./configure --disable-debug  --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2p -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2p/include" --enable-ipv6 >>"${OUTTO}" 2>&1
+  if [[ $LTORRENT == 0.13.4 ]] || [[ $LTORRENT == 0.13.6 ]]; then
+    cp ${local_setup}sources/libtorrent-${LTORRENT}-tar.patch .
+    patch -p1 < libtorrent-${LTORRENT}-tar.patch >>"${OUTTO}" 2>&1
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr --enable-ipv6 >>"${OUTTO}" 2>&1
   elif [ $LTORRENT == 0.13.7 ]; then
-  cp ${local_setup}sources/libtorrent-0.13.7-tar.patch .
-  patch -p1 < libtorrent-*-tar.patch >>"${OUTTO}" 2>&1
-  ./configure --disable-debug  --prefix=/usr >>"${OUTTO}" 2>&1
+    cp ${local_setup}sources/libtorrent-0.13.7-tar.patch .
+    patch -p1 < libtorrent-*-tar.patch >>"${OUTTO}" 2>&1
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr >>"${OUTTO}" 2>&1
   else
-  ./configure --disable-debug  --prefix=/usr OPENSSL_LIBS="-L/root/openssl-1.0.2p -lssl -lcrypto" OPENSSL_CFLAGS="-I/root/openssl-1.0.2p/include" >>"${OUTTO}" 2>&1
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr >>"${OUTTO}" 2>&1
   fi
+  ltversion=`cat configure.ac | grep -Eo "AC_INIT\(libtorrent,.*" | grep -Eo "[0-9.]+" | head -n1`
   make -j${MAXCPUS} >>"${OUTTO}" 2>&1
-  make install >>"${OUTTO}" 2>&1
+  checkinstall -y --pkgversion=${ltversion} --pkgname=libtorrent-rakshasa >>"${OUTTO}" 2>&1
+  ldconfig >>"${OUTTO}" 2>&1
 }
 
 # rtorrent function
@@ -735,19 +746,22 @@ function _rtorrent() {
   cp ${local_setup}sources/rtorrent-${RTVERSION}.tar.gz .
   tar -xzvf rtorrent-${RTVERSION}.tar.gz >>"${OUTTO}" 2>&1
   cd rtorrent-${RTVERSION}
-  ./autogen.sh >>"${OUTTO}" 2>&1
-  if [ $RTVERSION == 0.9.4 ]; then
-  cp ${local_setup}sources/rtorrent-0.9.4-tar.patch .
-  patch -p1 < rtorrent-*-tar.patch >>"${OUTTO}" 2>&1
-  ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c --enable-ipv6 >>"${OUTTO}" 2>&1
-  elif [[ $RTVERSION == 0.9.6 ]] || [[ $RTVERSION == 0.9.7 ]]; then
-  ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c --enable-ipv6 >>"${OUTTO}" 2>&1
+  if [ $RTVERSION == 0.9.4 ] || [[ $RTVERSION == 0.9.6 ]]; then
+    cp ${local_setup}sources/rtorrent-${RTVERSION}-tar.patch .
+    patch -p1 < rtorrent-*-tar.patch >>"${OUTTO}" 2>&1
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c --enable-ipv6 >>"${OUTTO}" 2>&1
+  elif  [[ $RTVERSION == 0.9.7 ]]; then
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c --enable-ipv6 >>"${OUTTO}" 2>&1
   else
-  ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c >>"${OUTTO}" 2>&1
+    ./autogen.sh >>"${OUTTO}" 2>&1
+    ./configure --disable-debug  --prefix=/usr --with-xmlrpc-c >>"${OUTTO}" 2>&1
   fi
+  rtversion=`cat configure.ac | grep -Eo "AC_INIT\(rtorrent,.*" | grep -Eo "[0-9.]+" | head -n1`
   make -j${MAXCPUS} >>"${OUTTO}" 2>&1
-  make install >>"${OUTTO}" 2>&1
-  cd /root/tmp
+  mkdir -p '/usr/include/torrent/data'
+  checkinstall -y --pkgversion=${rtversion} --pkgname=rtorrent >>"${OUTTO}" 2>&1
   ldconfig >>"${OUTTO}" 2>&1
   rm -rf /root/tmp/rtorrent-${RTVERSION}* >>"${OUTTO}" 2>&1
   touch /install/.rtorrent.lock
@@ -791,14 +805,15 @@ function _deluge() {
   ./autotool.sh >>"${OUTTO}" 2>&1;
   ./configure --enable-python-binding --disable-debug --enable-encryption --with-libgeoip=system --with-libiconv CXXFLAGS=-std=c++11 >>"${OUTTO}" 2>&1;
   make -j$(nproc) >>"${OUTTO}" 2>&1;
-  checkinstall -y --pkgversion=${ltversion} >>"${OUTTO}" 2>&1;
+  mkdir -p /usr/local/include/libtorrent
+  checkinstall -y --pkgversion=${ltversion} --pkgname=libtorrent-rasterbar >>"${OUTTO}" 2>&1;
   ldconfig
   cd ..
   wget -q http://download.deluge-torrent.org/source/deluge-1.3.15.tar.gz
   tar -zxvf deluge-1.3.15.tar.gz >>"${OUTTO}" 2>&1
   cd deluge-1.3.15
   python setup.py build >>"${OUTTO}" 2>&1
-  python setup.py install --install-layout=deb >>"${OUTTO}" 2>&1
+  python setup.py install --record /install/.deluge.install.record --install-layout=deb >>"${OUTTO}" 2>&1
   python setup.py install_data >>"${OUTTO}" 2>&1
   cd ..
   rm -r {deluge-1.3.15,libtorrent}
@@ -864,7 +879,10 @@ EOF
 
 # Transmission function
 function _insTr() {
-  sudo add-apt-repository -y ppa:transmissionbt/ppa >>"${OUTTO}" 2>&1
+  apt-get -y install software-properties-common >>"${OUTTO}" 2>&1
+  if [[ $DISTRO == Ubuntu ]]; then
+    sudo add-apt-repository -y ppa:transmissionbt/ppa
+  fi
   apt-get -q -y update >>"${OUTTO}" 2>&1
   apt-get -q -y install transmission-daemon >>"${OUTTO}" 2>&1
   systemctl stop transmission-daemon >>"${OUTTO}" 2>&1
@@ -1000,9 +1018,6 @@ function _insTrWeb() {
 	main
 
   rm -rf "$tmpFolder"
-  #touch /install/.transmission.lock
-  #cd ${local_dashboard}/custom
-  #patch -p1 < ${local_setup}templates/tr-php.patch >>"${OUTTO}" 2>&1
 }
 
 function _insTrApache() {
@@ -1041,6 +1056,8 @@ function _qbittorrent() {
     function version_qb() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
     if [[ ${QBVERSION} != "no" ]] && (version_qb ${QBVERSION} 4.1.3); then
       LTRC=RC_1_1
+    else
+      LTRC=RC_1_0
     fi
     git clone -b ${LTRC} https://github.com/arvidn/libtorrent.git >>"${OUTTO}" 2>&1;
     cd libtorrent
@@ -1050,7 +1067,8 @@ function _qbittorrent() {
     ./autotool.sh >>"${OUTTO}" 2>&1;
     ./configure --enable-python-binding --disable-debug --enable-encryption --with-libgeoip=system --with-libiconv CXXFLAGS=-std=c++11 >>"${OUTTO}" 2>&1;
     make -j$(nproc) >>"${OUTTO}" 2>&1;
-    checkinstall -y --pkgversion=${ltversion} >>"${OUTTO}" 2>&1;
+    mkdir -p /usr/local/include/libtorrent
+    checkinstall -y --pkgversion=${ltversion} --pkgname=libtorrent-rasterbar >>"${OUTTO}" 2>&1;
   fi
   ldconfig >>"${OUTTO}" 2>&1;
   if [[ "$CODENAME" =~ ("wily"|"jessie") ]]; then
@@ -1069,7 +1087,7 @@ function _qbittorrent() {
   cd ${local_packages}
   git clone https://github.com/qbittorrent/qBittorrent >>"${OUTTO}" 2>&1;
   cd qBittorrent
-  git checkout release-$QBVERSION >>"${OUTTO}" 2>&1
+  git checkout release-${QBVERSION} >>"${OUTTO}" 2>&1
   ./configure --disable-gui --disable-debug >>"${OUTTO}" 2>&1;
   make -j$(nproc) >>"${OUTTO}" 2>&1;
   checkinstall -y --pkgname=qbittorrent-headless --pkgversion=$QBVERSION --pkggroup qbittorrent >>"${OUTTO}" 2>&1;
@@ -1091,8 +1109,6 @@ function _qbittorrent() {
   chown -R ${username}.${username} /home/${username}/.config/
   mkdir -p /home/${username}/torrents/qbittorrent
   chown ${username}: /home/${username}/torrents/qbittorrent
-  systemctl enable qbittorrent@${username} >/dev/null 2>&1
-  systemctl start qbittorrent@${username} >/dev/null 2>&1
   cd ${local_packages}
   rm -r qBittorrent
 }
@@ -1134,15 +1150,14 @@ function _rutorrent() {
   cd /srv
   if [[ -d /srv/rutorrent ]]; then rm -rf rutorrent;fi
   mkdir rutorrent
-  cp -r ${local_rutorrent}/. rutorrent
+  # use latest rutorrent from github
+  git clone --recurse-submodules https://github.com/Novik/ruTorrent.git rutorrent >>"${OUTTO}" 2>&1
+  chown -R www-data:www-data rutorrent
 }
 
 function _rutorrent-plugins() {
-  cd /srv/rutorrent
-  if [[ -d /srv/rutorrent/plugins ]]; then rm -rf plugins;fi
-  mkdir plugins
-  cp -R ${local_rplugins}/. plugins
-  apt-get install -y sox libsox-fmt-mp3  >>"${OUTTO}" 2>&1
+  apt-get install -y sox libsox-fmt-mp3  python-dev python-cryptography python-openssl python-setuptools >>"${OUTTO}" 2>&1
+  pip install CfScrape >>"${OUTTO}" 2>&1
 }
 
 # function to install dashboard
@@ -1172,6 +1187,46 @@ function _fileindexer() {
   if [[ ${QBVERSION} != "no" ]]; then
 	ln -s /home/${username}/torrents/qbittorrent/ ${username}.qbittorrent.downloads
   fi
+}
+
+function _filebrowser() {
+  cd /tmp
+  curl -fsSL https://filebrowser.xyz/get.sh | bash >>"${OUTTO}" 2>&1
+  mkdir -p /home/${username}/.config/filebrowser/ >>"${OUTTO}" 2>&1
+  mkdir -p /home/${username}/.config/filebrowser/log >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db config init >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db config set \
+--address 127.0.0.1 \
+--port 8088 \
+--locale en \
+--log /home/${username}/.config/filebrowser/log/filebrowser.log \
+--root="/home/${username}/" \
+--auth.method=noauth \
+--baseurl="/filebrowser/" >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db users add ${username} ${passwd} --perm.admin >>"${OUTTO}" 2>&1
+  cp ${local_setup}templates/sysd/filebrowser.template  /etc/systemd/system/filebrowser@.service >/dev/null 2>&1
+  systemctl enable filebrowser@${username} >/dev/null 2>&1
+  chown ${username}.${username} -R /home/${username}/.config/filebrowser/ >>"${OUTTO}" 2>&1
+}
+
+function _insFBApache() {
+APPNAME='filebrowser'
+APPDPORT='8088'
+  cat > /etc/apache2/sites-enabled/filebrowser.conf <<EOF
+RewriteEngine On
+RewriteCond %{HTTP:Connection} Upgrade [NC]
+RewriteCond %{QUERY_STRING} transport=websocket    [NC]
+RewriteRule /filebrowser/(.*)           ws://localhost:$APPDPORT/$1 [P,L]
+RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+RewriteRule /filebrowser/(.*)           http://localhost:$APPDPORT/$1 [P,L]
+ProxyRequests off
+<Location /$APPNAME>
+ProxyPass http://localhost:$APPDPORT
+ProxyPassReverse http://localhost:$APPDPORT
+</Location>
+EOF
+  touch /install/.filebrowser.lock
+  chown www-data: /etc/apache2/sites-enabled/filebrowser.conf
 }
 
 # function to configure apache
@@ -1260,49 +1315,135 @@ function _rconf() {
 function _plugins() {
   cd "${rutorrent}plugins/"
   if [[ ${primaryroot} == "root" ]]; then
-    rm -r ${rutorrent}plugins/diskspaceh
+    cp -rf ${local_rplugins}/diskspace ${rutorrent}plugins/diskspace
+    chown -R www-data: ${rutorrent}plugins/diskspace
+    rm -rf ${rutorrent}plugins/diskspaceh
   else
-    rm -r ${rutorrent}plugins/diskspace
+    cp -rf ${local_rplugins}/diskspaceh ${rutorrent}plugins/diskspaceh
+    chown -R www-data: ${rutorrent}plugins/diskspaceh
+    rm -rf ${rutorrent}plugins/diskspace
   fi
 
-  cp /srv/rutorrent/home/fileshare/.htaccess /srv/rutorrent/plugins/fileshare/
-  cd /srv/rutorrent/home/fileshare/
-  rm -rf share.php
-  ln -s ../../plugins/fileshare/share.php
-  cp ${local_setup}templates/rutorrent/plugins/fileshare/conf.php.template /srv/rutorrent/plugins/fileshare/conf.php
+  # Adjust mktorrent
+  cd /srv/rutorrent/
+  sed -i 's/useExternal = false;/useExternal = "mktorrent";/' /srv/rutorrent/plugins/create/conf.php
+  sed -i 's/pathToCreatetorrent = '\'\''/pathToCreatetorrent = '\''\/usr\/bin\/mktorrent'\''/' /srv/rutorrent/plugins/create/conf.php
+  sed -i "s/\$pathToExternals\['sox'\] = ''/\$pathToExternals\['sox'\] = '\/usr\/bin\/sox'/g" /srv/rutorrent/plugins/spectrogram/conf.php
 
-  sed -i 's/homeDirectory/topDirectory/g' /srv/rutorrent/plugins/filemanager/flm.class.php
-  sed -i 's/homeDirectory/topDirectory/g' /srv/rutorrent/plugins/filemanager/settings.js.php
-  sed -i 's/showhidden: true,/showhidden: false,/g' "${rutorrent}plugins/filemanager/init.js"
-  chown -R www-data.www-data "${rutorrent}"
-  cd ${rutorrent}plugins/theme/themes/
-  git clone https://github.com/QuickBox/club-QuickBox club-QuickBox >>"${OUTTO}" 2>&1
-  chown -R www-data:www-data club-QuickBox
-  cd ${rutorrent}plugins
-  perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"club-QuickBox\"\;/g" ${rutorrent}plugins/theme/conf.php
-  rm -rf ${rutorrent}plugins/tracklabels/labels/nlb.png
+  # Add QuickBox theme
+  if [[ ! -d /srv/rutorrent/plugins/theme/themes/club-QuickBox ]]; then
+    cd /srv/rutorrent/plugins/theme/themes
+    git clone https://lab.quickbox.io/QuickBox/club-QuickBox.git club-QuickBox >>"${OUTTO}" 2>&1
+    chown -R www-data:www-data club-QuickBox
+    perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"club-QuickBox\"\;/g" /srv/rutorrent/plugins/theme/conf.php
+  fi
 
-  # Needed for fileupload
-  # wget http://ftp.nl.debian.org/debian/pool/main/p/plowshare/plowshare4_2.1.3-1_all.deb -O plowshare4.deb >>"${OUTTO}" 2>&1
-  # wget http://ftp.nl.debian.org/debian/pool/main/p/plowshare/plowshare_2.1.3-1_all.deb -O plowshare.deb >>"${OUTTO}" 2>&1
-  apt-get -y install plowshare >>"${OUTTO}" 2>&1
-  dpkg -i plowshare*.deb >>"${OUTTO}" 2>&1
-  rm -rf plowshare*.deb >>"${OUTTO}" 2>&1
-  cd /root
-  mkdir -p /root/bin
-  git clone https://github.com/mcrapet/plowshare.git ~/.plowshare-source >>"${OUTTO}" 2>&1
-  cd ~/.plowshare-source >>"${OUTTO}" 2>&1
-  make install PREFIX=$HOME >>"${OUTTO}" 2>&1
-  cd && rm -rf .plowshare-source >>"${OUTTO}" 2>&1
-  apt-get -f install >>"${OUTTO}" 2>&1
+  # Add pausewebui
+  if [[ ! -d /srv/rutorrent/plugins/pausewebui ]]; then
+    cd /srv/rutorrent/plugins/
+    svn co https://github.com/Gyran/rutorrent-pausewebui/trunk/ /srv/rutorrent/plugins/pausewebui >>"${OUTTO}" 2>&1
+    chown -R www-data: /srv/rutorrent/plugins/pausewebui
+  fi
 
-  mkdir -p /srv/rutorrent/conf/users/"${username}"/plugins/fileupload/
-  chmod 775 /srv/rutorrent/plugins/fileupload/scripts/upload
-  cp /srv/rutorrent/plugins/fileupload/conf.php /srv/rutorrent/conf/users/"${username}"/plugins/fileupload/conf.php
-  chown -R www-data: /srv/rutorrent/conf/users/"${username}"
+  # Add fileshare
+  if [[ ! -d /srv/rutorrent/plugins/fileshare ]]; then
+    cd /srv/rutorrent/plugins/
+    svn co -q https://github.com/nelu/rutorrent-thirdparty-plugins/trunk/fileshare >>"${OUTTO}" 2>&1
+    chown -R www-data: /srv/rutorrent/plugins/fileshare
+    cp /srv/rutorrent/home/fileshare/.htaccess /srv/rutorrent/plugins/fileshare/
+    cd /srv/rutorrent/home/fileshare/
+    rm -rf share.php
+    ln -s ../../plugins/fileshare/share.php
+    cp ${local_setup}templates/rutorrent/plugins/fileshare/conf.php.template /srv/rutorrent/plugins/fileshare/conf.php
+  fi
 
-  # Set proper permissions to filemanager so it may execute commands
-  find /srv/rutorrent/plugins/filemanager/scripts -type f -exec chmod 755 {} \;
+  # Add filemanager
+  if [[ ! -d /srv/rutorrent/plugins/filemanager ]]; then
+    cd /srv/rutorrent/plugins/
+    svn co -q https://github.com/nelu/rutorrent-thirdparty-plugins/trunk/filemanager >>"${OUTTO}" 2>&1
+    chown -R www-data: /srv/rutorrent/plugins/filemanager
+    chmod -R +x filemanager/scripts
+    
+    cat >/srv/rutorrent/plugins/filemanager/conf.php<<FMCONF
+  <?php
+
+    \$fm['tempdir'] = '/tmp';
+    \$fm['mkdperm'] = 755;
+
+    // set with fullpath to binary or leave empty
+    \$pathToExternals['rar'] = '$(which rar)';
+    \$pathToExternals['unrar'] = '$(which unrar)';
+    \$pathToExternals['zip'] = '$(which zip)';
+    \$pathToExternals['unzip'] = '$(which unzip)';
+    \$pathToExternals['tar'] = '$(which tar)';
+
+    // archive mangling, see archiver man page before editing
+
+    \$fm['archive']['types'] = array('rar', 'unrar', 'zip', 'tar', 'gzip', 'bzip2');
+
+    \$fm['archive']['compress'][0] = range(0, 5);
+    \$fm['archive']['compress'][1] = array('-0', '-1', '-9');
+    \$fm['archive']['compress'][2] = \$fm['archive']['compress'][3] = \$fm['archive']['compress'][4] = array(0);
+
+  ?>
+FMCONF
+    sed -i 's/showhidden: true,/showhidden: false,/g' "${rutorrent}plugins/filemanager/init.js"
+  fi
+  # Add ratiocolor
+  if [[ ! -d /srv/rutorrent/plugins/ratiocolor ]]; then
+    cd /srv/rutorrent/plugins
+    svn co https://github.com/Gyran/rutorrent-ratiocolor.git/trunk ratiocolor >>"${OUTTO}" 2>&1
+    sed -i "s/changeWhat = \"cell-background\";/changeWhat = \"font\";/g" /srv/rutorrent/plugins/ratiocolor/init.js
+    chown -R www-data: ratiocolor
+  fi
+
+  # Add mobile
+  if [[ ! -d /srv/rutorrent/plugins/mobile ]]; then
+    cd /srv/rutorrent/plugins
+    git clone https://github.com/xombiemp/rutorrentMobile.git mobile >>"${OUTTO}" 2>&1
+    chown -R www-data: mobile
+  fi
+
+  # Add logoff
+  if [[ ! -d /srv/rutorrent/plugins/logoff ]]; then
+    cd /srv/rutorrent/plugins
+    wget -q https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/rutorrent-logoff/logoff-1.3.tar.gz
+    tar xf logoff-1.3.tar.gz >>"${OUTTO}" 2>&1
+    rm -rf logoff-1.3.tar.gz
+    chown -R www-data: logoff
+  fi
+
+  # Add fileupload
+  if [[ ! -d /srv/rutorrent/plugins/fileupload ]]; then
+    # Needed for fileupload
+    # wget http://ftp.nl.debian.org/debian/pool/main/p/plowshare/plowshare4_2.1.3-1_all.deb -O plowshare4.deb >>"${OUTTO}" 2>&1
+    # wget http://ftp.nl.debian.org/debian/pool/main/p/plowshare/plowshare_2.1.3-1_all.deb -O plowshare.deb >>"${OUTTO}" 2>&1
+    apt-get -y install plowshare >>"${OUTTO}" 2>&1
+    dpkg -i plowshare*.deb >>"${OUTTO}" 2>&1
+    rm -rf plowshare*.deb >>"${OUTTO}" 2>&1
+    cd /root
+    mkdir -p /root/bin
+    git clone https://github.com/mcrapet/plowshare.git ~/.plowshare-source >>"${OUTTO}" 2>&1
+    cd ~/.plowshare-source >>"${OUTTO}" 2>&1
+    make install PREFIX=$HOME >>"${OUTTO}" 2>&1
+    cd && rm -rf .plowshare-source >>"${OUTTO}" 2>&1
+    apt-get -f install >>"${OUTTO}" 2>&1
+
+    cd /srv/rutorrent/plugins/
+    svn co https://github.com/nelu/rutorrent-thirdparty-plugins/trunk/fileupload >>"${OUTTO}" 2>&1
+    mkdir -p /srv/rutorrent/conf/users/"${username}"/plugins/fileupload/
+    chmod 775 /srv/rutorrent/plugins/fileupload/scripts/upload
+    chown -R www-data: fileupload
+    cp /srv/rutorrent/plugins/fileupload/conf.php /srv/rutorrent/conf/users/"${username}"/plugins/fileupload/conf.php
+    chown -R www-data: /srv/rutorrent/conf/users/"${username}"
+  fi
+
+  # Add stream
+  if [[ ! -d /srv/rutorrent/plugins/stream ]]; then
+    cd /srv/rutorrent/plugins
+    git clone https://github.com/hashknot/rutorrent-stream.git stream >>"${OUTTO}" 2>&1
+    chown -R www-data: stream
+  fi
 }
 
 # function autodl to install autodl irssi scripts
@@ -1338,15 +1479,6 @@ function _makedirs() {
   usermod -a -G "${username}" www-data >>"${OUTTO}" 2>&1
 }
 
-# function to make crontab .statup file
-#function _cronfile() {
-#  cp ${local_setup}templates/startup.template /home/${username}/.startup
-#  chmod 775 /home/${username}/.startup
-#  if [[ $DELUGE != NO ]]; then
-#  sed -i 's/DELUGEWEB_CLIENT=no/DELUGEWEB_CLIENT=yes/g' /home/${username}/.startup
-#  sed -i 's/DELUGED_CLIENT=no/DELUGED_CLIENT=yes/g' /home/${username}/.startup
-#fi
-#}
 
 # function to configure first user config.php
 function _ruconf() {
@@ -1459,8 +1591,9 @@ function _boot() {
   cp ${local_setup}templates/sysd/autodlirssi.template /etc/systemd/system/irssi@.service >/dev/null 2>&1
   cp ${local_setup}templates/sysd/deluged.template /etc/systemd/system/deluged@.service >/dev/null 2>&1
   cp ${local_setup}templates/sysd/deluge-web.template /etc/systemd/system/deluge-web@.service >/dev/null 2>&1
-  systemctl enable {rtorrent,irssi,deluged,deluge-web}@${username} >/dev/null 2>&1
-  systemctl start {rtorrent,irssi,deluged,deluge-web}@${username} >/dev/null 2>&1
+  cp ${local_setup}templates/sysd/qbittorrent.template  /etc/systemd/system/qbittorrent@.service >/dev/null 2>&1
+  systemctl enable {rtorrent,irssi,deluged,deluge-web,qbittorrent}@${username} >/dev/null 2>&1
+  systemctl start {rtorrent,irssi,deluged,deluge-web,qbittorrent}@${username} >/dev/null 2>&1
   #fi
 
   echo "*/1 * * * * root bash /usr/local/bin/quickbox/system/set_interface" > /etc/cron.d/set_interface
@@ -1473,10 +1606,6 @@ function _perms() {
   chmod +x /etc/cron.daily/denypublic >/dev/null 2>&1
   chmod 777 /home/${username}/.sessions >/dev/null 2>&1
   chown -R chown -R www-data:www-data /srv/rutorrent/home >/dev/null 2>&1
-  if [[ ${tr} == "yes" ]]; then
-	chown -R ${username}:debian-transmission /home/${username}/torrents/transmission >/dev/null 2>&1
-	service transmission-daemon reload >>"${OUTTO}" 2>&1
-  fi
 }
 
 # BBR function
@@ -1605,6 +1734,7 @@ IFACE=$(ip link show|grep -i broadcast|grep -m1 UP|cut -d: -f 2|cut -d@ -f 1|sed
 HOSTNAME1=$(hostname -s);
 PORT=$(shuf -i 2000-61000 -n 1)
 PORTEND=$((${PORT} + 1500))
+apt-get -qq -y install net-tools > /dev/null 2>&1
 while [[ "$(netstat -ln | grep ':'"$PORT"'' | grep -c 'LISTEN')" -eq "1" ]]; do PORT="$(shuf -i 2000-61000 -n 1)"; done
 RPORT=$(shuf -i 2000-61000 -n 1)
 while [[ "$(netstat -ln | grep ':'"$RPORT"'' | grep -c 'LISTEN')" -eq "1" ]]; do RPORT="$(shuf -i 2000-61000 -n 1)"; done
@@ -1643,6 +1773,7 @@ _askdeluge
 _asktr
 apt-get install -q -y curl >>"${OUTTO}" 2>&1
 _askqb
+_askfb
 _askdashtheme
 _adduser
 _askffmpeg
@@ -1659,9 +1790,9 @@ echo ""
 echo -n "Pulling QuickBox Ecosystem ... ";_repos & spinner $!;echo
 echo -n "Updating system ... ";_updates & spinner $!;echo
 echo -n "Installing all needed dependencies ... ";_depends & spinner $!;echo
-if [[ $RTVERSION != 0.9.7 ]]; then
-  echo -n "Installing openssl ... ";_openssl & spinner $!;echo
-fi
+#if [[ $RTVERSION != 0.9.7 ]]; then
+#  echo -n "Installing openssl ... ";_openssl & spinner $!;echo
+#fi
 echo -n "Setting up system executables ... ";_syscommands & spinner $!;echo
 echo -n "Building required user directories ... ";_skel & spinner $!;echo
 if [[ ${quota} == "yes" ]]; then
@@ -1684,7 +1815,7 @@ fi
 if [[ ${tr} == "yes" ]]; then
 	echo -n "Configuring Transmisson ... ";_insTr & spinner $!;echo
 	echo -n "Installing Transmisson Web Control ... ";_insTrWeb & spinner $!;echo
-  echo -n "Setting up Transmission Reverse Proxy ... ";_insTrApache & spinner $!;echo
+	echo -n "Setting up Transmission Reverse Proxy ... ";_insTrApache & spinner $!;echo
 fi
 if [[ ${QBVERSION} != "no" ]]; then
 	echo -n "Installing qBittorrent ... ";_qbittorrent & spinner $!;echo
@@ -1693,6 +1824,10 @@ fi
 echo -n "Installing mktorrent from source ... ";_mktorrent & spinner $!;echo
 echo -n "Installing quickbox dashboard ... ";_dashboard & spinner $!;echo
 echo -n "Building system file indexer (h5ai) ... ";_fileindexer & spinner $!;echo
+if [[ ${fb} == "yes" ]]; then
+echo -n "Building filebrowser ... ";_filebrowser & spinner $!;echo
+echo -n "Setting up filebrowser Reverse Proxy ... ";_insFBApache & spinner $!;echo
+fi
 echo -n "Setting up seedbox.conf for apache ... ";_apacheconf & spinner $!;echo
 echo -n "Fix SSL Cert for apache ... ";_fix_cert & spinner $!;echo
 echo -n "Installing .rtorrent.rc for ${username} ... ";_rconf & spinner $!;echo

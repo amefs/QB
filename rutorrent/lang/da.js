@@ -160,7 +160,7 @@ var theUILang =
  GetTrackerMessage		: "Modtag beskeder fra tracker",
  Help				: "Hjælp",
  Speed				: "Hastighed",
- Dont_add_tname 		: "Tilføj ikke torrentens navn til stien", 
+ Dont_add_tname 		: "Tilføj ikke torrentens navn til stien",
  Free_Disk_Space		: "Ledig Disk Plads",
  badXMLRPCVersion		: "rTorrent er kompileret med en forkert version af xmlrpc-c biblioteket, som ikke har support for i8. Versionen skal være >=1.11. Noget funktionalitet vil ikke være tilgængelig.",
  badLinkTorTorrent		: "Ingen forbindelse til rTorrent. Check om rtorrent kører. Check $scgi_port og $scgi_host settings i config.php og scgi_port i rTorrent konfigurations filen.",
@@ -275,5 +275,7 @@ var theUILang =
  PeerDL 			: "Peer DL",
  PeerDownloaded 		: "Peer Downloaded",
  Save_path			: "Save path",
- registerMagnet			: "Try to register magnet protocol handler at start"
+ registerMagnet			: "Try to register magnet protocol handler at start",
+ linkTorTorrentRestored		: "Connection to rTorrent established.",
+ removeAllTegs			: "Remove all tags"
 };

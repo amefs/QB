@@ -24,20 +24,31 @@ OUTTO=/srv/rutorrent/home/db/output.log
   username=$(whoami);
   rutorrent="/srv/rutorrent/";
   echo "Accessing autodl-irssi in the plugin vault ... " >>"${OUTTO}" 2>&1;
-  PLUGINVAULT="/etc/QuickBox/rtplugins/"; cd "${rutorrent}plugins"
-  sleep 5
+  mkdir -p "/home/${username}/.irssi/scripts/autorun/" >>"${OUTTO}" 2>&1
+  cd "/home/${username}/.irssi/scripts/"
+  # Grab the most recent version of AutoDL-trackers
+  curl -sL http://git.io/vlcND | grep -Po '(?<="browser_download_url": ")(.*-v[\d.]+.zip)' | xargs wget --quiet -O autodl-irssi.zip
 
   echo "Installing autodl-irssi plugin ... " >>"${OUTTO}" 2>&1;
-  PLUGIN="autodl-irssi"
-    for i in $PLUGIN; do
-      cp -R "${PLUGINVAULT}$i" .
-    done
+  unzip -o autodl-irssi.zip >>"${OUTTO}" 2>&1
+  rm autodl-irssi.zip
+  cp -f autodl-irssi.pl autorun/
+  mkdir -p "/home/${username}/.autodl" >>"${OUTTO}" 2>&1
+  touch "/home/${username}/.autodl/autodl.cfg"
+  chown ${username}: /home/${username}/.autodl/autodl.cfg
+  cat >"/home/${username}/.autodl/autodl2.cfg"<<ADC
+[options]
+gui-server-port = ${AUTODLPORT}
+gui-server-password = ${AUTODLPASSWORD}
+ADC
   sleep 5
 
   echo "Adjusting permissions ... " >>"${OUTTO}" 2>&1;
-  chown -R www-data: ${rutorrent}plugins/$PLUGIN
+  chown -R "${username}.${username}" "/home/${username}/.irssi/"
+  chown -R "${username}.${username}" "/home/${username}"
   echo "Autodl-irssi Plugin Install Complete!" >>"${OUTTO}" 2>&1;
 
+  touch /install/.autodlirssi.lock
   sleep 5
   echo >>"${OUTTO}" 2>&1;
   echo >>"${OUTTO}" 2>&1;

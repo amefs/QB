@@ -90,6 +90,24 @@
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- modal -->
+<!-- FILEBROWSER UNINSTALL MODAL -->
+<div class="modal bounceIn animated" id="filebrowserRemovalConfirm" tabindex="-1" role="dialog" aria-labelledby="filebrowserRemovalConfirm" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="filebrowserRemovalConfirm"><?php echo T('UNINSTALL_TITLE'); ?> filebrowser?</h4>
+      </div>
+      <div class="modal-body">
+        <?php echo T('UNINSTALL_FILEBROWSER_TXT'); ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo T('CANCEL'); ?></button>
+        <a href="?removepackage-filebrowser=true" id="filebrowserRemove" class="btn btn-primary"><?php echo T('AGREE'); ?></a>
+      </div>
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal -->
 <!-- HEADPHONES UNINSTALL MODAL -->
 <div class="modal bounceIn animated" id="headphonesRemovalConfirm" tabindex="-1" role="dialog" aria-labelledby="HeadphonesRemovalConfirm" aria-hidden="true">
   <div class="modal-dialog">
@@ -782,6 +800,15 @@ $(document).ready(function() {
     $.gritter.add({
       title: '<?php echo T('UNINSTALLING_TITLE'); ?> Emby-Server',
       text: '<?php echo T('UNINSTALLING_TXT_1'); ?> Emby-Server <?php echo T('UNINSTALLING_TXT_2'); ?>',
+      class_name: 'with-icon times-circle danger',
+      sticky: true
+    });
+  });
+  // filebrowserRemove
+  $('#filebrowserRemove').click(function(){
+    $.gritter.add({
+      title: '<?php echo T('UNINSTALLING_TITLE'); ?> filebrowser',
+      text: '<?php echo T('UNINSTALLING_TXT_1'); ?> filebrowser <?php echo T('UNINSTALLING_TXT_2'); ?>',
       class_name: 'with-icon times-circle danger',
       sticky: true
     });

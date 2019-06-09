@@ -21,7 +21,7 @@
 #
 OUTTO=/srv/rutorrent/home/db/output.log
 
-function _removeplugin-check_port() {
+function _removeplugin-checkport() {
   username=$(whoami);
   rutorrent="/srv/rutorrent/";
   echo "Uninstalling the check_port plugin ... " >>"${OUTTO}" 2>&1;

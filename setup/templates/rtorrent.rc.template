@@ -1,5 +1,5 @@
 # -- START HERE --
-dht = auto
+dht.mode.set = off
 directory.default.set = /home/USERNAME/torrents/rtorrent
 encoding.add = UTF-8
 encryption = allow_incoming,try_outgoing,enable_retry,require_RC4

@@ -192,6 +192,10 @@
               <?php if (file_exists('/install/.emby.lock')) { ?>
                 <li><a class="grayscale" href="<?php echo "$embyURL"; ?>" target="_blank"><img src="img/brands/emby.png" class="brand-ico"> <span>Emby</span></a></li>
               <?php } ?>
+              <!-- // FILEBROWSER // -->
+              <?php if (processExists("filebrowser",$username) && file_exists('/install/.filebrowser.lock')) { ?>
+                <li><a href="<?php echo "$filebrowserURL"; ?>" class="grayscale" target="_blank"><img src="img/brands/filebrowser.png" class="brand-ico"> <span>filebrowser</span></a></li>
+              <?php } ?>
               <?php if (file_exists('/install/.headphones.lock')) { ?>
                 <li><a class="grayscale" href="<?php echo "$headphonesURL"; ?>" target="_blank"><img src="img/brands/headphones.png" class="brand-ico"> <span>Headphones</span></a></li>
               <?php } ?>
@@ -263,7 +267,7 @@
                 <?php if (file_exists('/install/.transmission.lock')) { ?>
                   <li><a href="/<?php echo "$username"; ?>.transmission.downloads" target="_blank">Transmission</a></li>
                 <?php } ?>
-				<?php if (file_exists('/install/.qbittorrent.lock')) { ?>
+                <?php if (file_exists('/install/.qbittorrent.lock')) { ?>
                   <li><a href="/<?php echo "$username"; ?>.qbittorrent.downloads" target="_blank">qBittorrent</a></li>
                 <?php } ?>
                 <?php if (file_exists('/home/'. $username .'/public_html/'. $username .'.zip')) { ?>

@@ -27,6 +27,8 @@ var TYPE_NUMBER = 1;
 var TYPE_DATE = 2;
 var TYPE_STRING_NO_CASE = 3;
 var TYPE_PROGRESS = 4;
+var TYPE_PEERS = 5;
+var TYPE_SEEDS = 6;
 var ALIGN_AUTO = 0;
 var ALIGN_LEFT = 1;
 var ALIGN_CENTER = 2;
@@ -725,6 +727,9 @@ dxSTable.prototype.Sort = function(e)
       		case TYPE_NUMBER : 
       			d.sort(function(x, y) { return self.sortNumeric(x, y); });
       			break;
+		case TYPE_PEERS :
+		case TYPE_SEEDS :
+			d.sort(function(x, y) { return self.sortPeers(x, y); });
       		default : 
       			d.sort();
       			break;
@@ -776,6 +781,13 @@ dxSTable.prototype.sortSecondary = function(x, y)
 	return( (ret==0) ? theSort.AlphaNumeric(m, n) : ((ret==1) || (ret==4)) ? theSort.Numeric(m, n) : theSort.Default(m, n) );
 }
 
+dxSTable.prototype.sortPeers = function(x, y)
+{
+	var r = theSort.PeersConnected(x.v, y.v);
+	r = ( (r == 0) ? theSort.PeersTotal(x.v, y.v) : r );
+	return( (r == 0) ? this.sortSecondary(x, y) : r );
+}
+
 var theSort = 
 {
 	Default: function(x, y)
@@ -797,7 +809,23 @@ var theSort =
 		var a = (x + "").toLowerCase();
 		var b = (y + "").toLowerCase();
 		return((a < b) ? -1 : (a > b) ? 1 : 0);
-	}
+	},
+	PeersTotal: function(x, y)
+	{
+		return( this.Numeric( this.PeerValue(x,this.peers_total_re), this.PeerValue(y,this.peers_total_re) ) );
+	},
+	PeersConnected: function(x, y)
+	{
+		return( this.Numeric( this.PeerValue(x,this.peers_connected_re), this.PeerValue(y,this.peers_connected_re) ) );
+	},
+	PeerValue: function(x,pcre)
+	{
+		var val = ((x || '')+"").match(pcre);
+		return( val ? val[1] : 0 );
+	},
+
+	peers_total_re: /\((\d+)\)$/,
+	peers_connected_re: /^(\d+)/,
 };
 
 dxSTable.prototype.init = function() 

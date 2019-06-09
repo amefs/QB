@@ -1,11 +1,11 @@
 <?php
 
 $plugins = array(
+        '_cloudflare',
         '_getdir',
         '_noty',
         '_noty2',
         '_task',
-        'autodl-irssi',
         'autotools',
         'check_port',
         'chunks',
@@ -54,6 +54,7 @@ $plugins = array(
         'tracklabels',
         'trafic',
         'unpack',
+        'uploadeta',
         'xmpp'
 );
 

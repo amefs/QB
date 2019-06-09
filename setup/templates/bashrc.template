@@ -1111,17 +1111,23 @@ echo -n "Username: "; read user
           systemctl start deluge-web@${username}
         fi
         if [[ -e /install/.transmission.lock ]]; then
-          systemctl stop transmission-daemon
-		  sleep 5
-		  sed -i "s/.*rpc-password.*/    \"rpc-password\": \"${passwd}\",/" /etc/transmission-daemon/settings.json
-          systemctl start transmission-daemon
+          systemctl stop transmission@${username}
+          sleep 5
+          sed -i "s/.*rpc-password.*/    \"rpc-password\": \"${passwd}\",/" /home/${username}/.config/transmission/settings.json
+          systemctl start transmission@${username}
         fi
         if [[ -e /install/.qbittorrent.lock ]]; then
           systemctl stop qbittorrent@${username}
-		  sleep 5
-		  ha1pass=`echo -n "${passwd}"|md5sum |cut -f1 -d' '`
+          sleep 5
+          ha1pass=`echo -n "${passwd}"|md5sum |cut -f1 -d' '`
           sed -i "s/.*Password_ha1.*/WebUI\\\Password_ha1=@ByteArray(${ha1pass})/" /home/${username}/.config/qBittorrent/qBittorrent.conf
           systemctl start qbittorrent@${username}
+        fi
+        if [[ -e /install/.filebrowser.lock ]]; then
+          systemctl stop filebrowser@${username}
+          sleep 5
+          filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db users update ${username} --password="${passwd}" >/dev/null 2>&1
+          systemctl start filebrowser@${username}
         fi
 }
 
@@ -1195,7 +1201,7 @@ echo $OK
 echo -n "writing $username .rtorrent.rc using port-range (${PORT}-${PORTEND})..."
 cat >/home/$username/.rtorrent.rc<<RC
 # -- START HERE --
-dht.mode.set = auto
+dht.mode.set = off
 directory.default.set = /home/${username}/torrents/rtorrent
 encoding.add = UTF-8
 protocol.encryption.set = allow_incoming,try_outgoing,enable_retry,require_RC4

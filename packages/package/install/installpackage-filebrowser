@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# [Quick Box :: Install filebrowser package]
+#
+# GITHUB REPOS
+# GitHub _ packages  :   https://github.com/QuickBox/quickbox_packages
+# LOCAL REPOS
+# Local _ packages   :   /etc/QuickBox/packages
+# Author             :   QuickBox.IO | JMSolo
+# URL                :   https://quickbox.io
+#
+# QuickBox Copyright (C) 2017 QuickBox.io
+# Licensed under GNU General Public License v3.0 GPL-3 (in short)
+#
+#   You may copy, distribute and modify the software as long as you track
+#   changes/dates in source files. Any modifications to our software
+#   including (via compiler) GPL-licensed code must also be made available
+#   under the GPL along with build & install instructions.
+
+DISTRO=$(lsb_release -is)
+CODENAME=$(lsb_release -cs)
+OUTTO=/srv/rutorrent/home/db/output.log
+username=$(cat /srv/rutorrent/home/db/master.txt)
+passwd=$(cat /root/${username}.info | cut -d ":" -f 3 | cut -d "@" -f 1)
+local_setup=/etc/QuickBox/setup/
+
+echo "Updating system & installing filebrowser ... "
+cd /tmp
+  curl -fsSL https://filebrowser.xyz/get.sh | bash >>"${OUTTO}" 2>&1
+  mkdir -p /home/${username}/.config/filebrowser/ >>"${OUTTO}" 2>&1
+  mkdir -p /home/${username}/.config/filebrowser/log >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db config init >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db config set \
+--address 127.0.0.1 \
+--port 8088 \
+--locale en \
+--log /home/${username}/.config/filebrowser/log/filebrowser.log \
+--root="/home/${username}/" \
+--auth.method=noauth \
+--baseurl="/filebrowser/" >>"${OUTTO}" 2>&1
+  filebrowser -d /home/${username}/.config/filebrowser/filebrowser.db users add ${username} ${passwd} --perm.admin >>"${OUTTO}" 2>&1
+  cp ${local_setup}templates/sysd/filebrowser.template  /etc/systemd/system/filebrowser@.service >/dev/null 2>&1
+  systemctl enable filebrowser@${username} >/dev/null 2>&1
+  chown ${username}.${username} -R /home/${username}/.config/filebrowser/ >>"${OUTTO}" 2>&1
+  systemctl start filebrowser@${username} >/dev/null 2>&1
+
+echo "Setting up filebrowser Reverse Proxy ... "
+APPNAME='filebrowser'
+APPDPORT='8088'
+  cat > /etc/apache2/sites-enabled/filebrowser.conf <<EOF
+RewriteEngine On
+RewriteCond %{HTTP:Connection} Upgrade [NC]
+RewriteCond %{QUERY_STRING} transport=websocket    [NC]
+RewriteRule /filebrowser/(.*)           ws://localhost:$APPDPORT/$1 [P,L]
+RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+RewriteRule /filebrowser/(.*)           http://localhost:$APPDPORT/$1 [P,L]
+ProxyRequests off
+<Location /$APPNAME>
+ProxyPass http://localhost:$APPDPORT
+ProxyPassReverse http://localhost:$APPDPORT
+</Location>
+EOF
+  touch /install/.filebrowser.lock
+  chown www-data: /etc/apache2/sites-enabled/filebrowser.conf
+
+echo "filebrowser Install Complete!"
+    echo >>"${OUTTO}" 2>&1;
+    echo >>"${OUTTO}" 2>&1;
+    echo "Close this dialog box to refresh your browser" >>"${OUTTO}" 2>&1;
+    service apache2 reload > /dev/null 2>&1
+
+    exit

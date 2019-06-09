@@ -24,7 +24,11 @@
 #
 
 function _insTr() {
-  sudo add-apt-repository -y ppa:transmissionbt/ppa >>"${OUTTO}" 2>&1
+  apt-get -y install software-properties-common >>"${OUTTO}" 2>&1
+  DISTRO=$(lsb_release -is)
+  if [[ $DISTRO == Ubuntu ]]; then
+    sudo add-apt-repository -y ppa:transmissionbt/ppa >>"${OUTTO}" 2>&1
+  fi
   apt-get -q -y update >>"${OUTTO}" 2>&1
   apt-get -q -y install transmission-daemon >>"${OUTTO}" 2>&1
   systemctl stop transmission-daemon >>"${OUTTO}" 2>&1

@@ -1,9 +1,39 @@
+## CHANGELOG efs-mod v1.1.4:
+
+## _Changelog updated sunday, Jun 9, 2019_
+
+### General additions
+
+- add filebrowser for web filemanagement
+
+### General adjustments
+
+- fix bugs
+
+## CHANGELOG efs-mod v1.1.4:
+
+_Changelog updated sunday, Apr 17, 2019_
+---
+
+### General additions
+* support qBittorrent 4.1.5
+* add patch for rtorrent 0.9.6 and 0.9.4 to adjust compiling in Ubuntu 18.04
+* merge latest code from upstream
+
+### General adjustments
+* update qBittorrent install script (work with libtorrent-rasterbar)
+* clean up code in setup script
+* use apt openssl package for compiling
+* adjust private repo
+* upgrade rutorrent and plugins
+* fix bugs
+
 ## CHANGELOG efs-mod v1.1.3:
 _Changelog updated sunday, Oct 16, 2018_
 ---
 
 ### General additions
-* support qBittorrent 4.1.3 (with high speed seeding config)
+* support qBittorrent 4.1.3
 * Add a question to confirm the replacement of ssh port
 
 ### General adjustments
@@ -21,7 +51,7 @@ _Changelog updated sunday, Aug 29, 2018_
 
 ### General additions
 * support rtorrent 0.9.7
-* support qBittorrent 4.1.2 (with high speed seeding config)
+* support qBittorrent 4.1.2
 * update deluge installing script
 
 ### General adjustments

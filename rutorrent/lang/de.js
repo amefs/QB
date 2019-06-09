@@ -2,9 +2,8 @@
  * German language file.
  *
  * Initial Author: schnurlos (utorrent@gmx.at)
- * Updated by Dario Rugani (kontakt@rugani.de)
  *
- * Author: 
+ * Author: Dario Rugani (kontakt@rugani.de)
  */
 
 var theUILang =
@@ -161,7 +160,7 @@ var theUILang =
  GetTrackerMessage		: "Nachrichten vom Tracker erhalten",
  Help				: "Hilfe",
  Speed				: "Geschwindigkeit",
- Dont_add_tname 		: "Torrentnamen nicht zum Pfad hinzufügen", 
+ Dont_add_tname 		: "Torrentnamen nicht zum Pfad hinzufügen",
  Free_Disk_Space		: "Freier Speicherplatz",
  badXMLRPCVersion		: "rTorrent wurde mit einer falschen Version von xmlrpc-c ohne i8 Support kompiliert. Version muss >= 1.11 sein. Einige Funktionalitäten werden nicht zur Verfügung stehen.",
  badLinkTorTorrent		: "Keine Verbindung zu rTorrent. Überprüfe ob es wirklicht läuft. Überprüfe $scgi_port und $scgi_host Einstellungen in config.php und scgi_port in der rTorrent Konfigurationsdatei.",
@@ -276,5 +275,7 @@ var theUILang =
  PeerDL 			: "Peer DL",
  PeerDownloaded 		: "Peer ges. Download",
  Save_path			: "Speicherpfad ",
- registerMagnet			: "Try to register magnet protocol handler at start"
+ registerMagnet			: "Try to register magnet protocol handler at start",
+ linkTorTorrentRestored		: "Connection to rTorrent established.",
+ removeAllTegs			: "Remove all tags"
 };
